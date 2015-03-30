@@ -1,0 +1,2 @@
+rootProject.name = "MyPermissions"
+include ":MyEssentials-Core"

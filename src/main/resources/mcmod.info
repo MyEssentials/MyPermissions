@@ -1,0 +1,17 @@
+[
+{
+  "modid": "MyPermissions",
+  "name": "MyPermissions",
+  "description": "Universial Permission System.",
+  "version": "${mod_version}",
+  "mcversion": "${minecraft_version}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": [
+    "Legobear154",
+    "AfterWind",
+    "Dariusc93"
+  ],
+  "credits": "Legobear154, AfterWind, and Dariusc93"
+}
+]
