@@ -15,6 +15,42 @@ buildscript {
     }
 }
 
+repositories {
+    maven {
+        name = "ic2"
+        url = "http://maven.ic2.player.to/"
+    }
+    ivy {
+        name = 'ThaumCraft 4 API'
+        artifactPattern 'https://dl.dropboxusercontent.com/u/47135879/Thaumcraft-1.7.10-4.2.1.4-api.zip'
+    }
+	maven {
+		name = "pex-repo"
+		url = "http://pex-repo.zachsthings.com"
+	}
+	maven {
+		name = "bukkit-repo"
+		url = "http://repo.bukkit.org/content/groups/public/"
+	}
+    maven {
+        name = "Vault"
+        url = "http://nexus.theyeticave.net/content/repositories/pub_releases"
+    }
+	maven {
+		name = "gravity-repo"
+		url = "http://repo.gravitydevelopment.net"
+	}
+
+    maven {
+        name = "SpongePowered"
+        url = "https://repo.spongepowered.org/maven"
+    }
+    maven {
+        name = "sk89q"
+        url = "http://maven.sk89q.com/artifactory/repo/"
+    }
+}
+
 // Load Configs
 ext.configFile = file "build.properties"
 
