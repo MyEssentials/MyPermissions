@@ -1,8 +1,11 @@
 package mypermissions.config.json;
 
 import com.google.common.reflect.TypeToken;
+import myessentials.MyEssentialsCore;
 import myessentials.json.JSONConfig;
 import mypermissions.MyPermissions;
+import mypermissions.entities.Group;
+import mypermissions.manager.PermissionManager;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.*;
@@ -11,9 +14,12 @@ import java.util.List;
 
 public class GroupConfig extends JSONConfig<GroupConfig.Wrapper> {
 
-    public GroupConfig(String path) {
+    private PermissionManager permissionManager;
+
+    public GroupConfig(String path, PermissionManager permissionManager) {
         super(path);
-        gsonType = new TypeToken<List<Wrapper>>() {}.getType();
+        this.permissionManager = permissionManager;
+        this.gsonType = new TypeToken<List<Wrapper>>() {}.getType();
     }
 
     @Override
@@ -53,7 +59,28 @@ public class GroupConfig extends JSONConfig<GroupConfig.Wrapper> {
             wrappers = gson.fromJson(reader, gsonType);
             reader.close();
 
+            if(wrappers.size() == 0) {
+                // Adding a default group
+                Wrapper defaultGroup = new Wrapper("default", new ArrayList<String>(), null);
+                wrappers.add(defaultGroup);
+                write(wrappers);
+            }
 
+            for (Wrapper wrapper : wrappers) {
+                Group group;
+                if (wrapper.parentName == null) {
+                    group = new Group(wrapper.name, wrapper.permissions);
+                } else {
+                    Group parent = permissionManager.getGroup(wrapper.parentName);
+                    if(parent == null) {
+                        MyEssentialsCore.instance.LOG.error("Group " + wrapper.name + " failed to load because it has an invalid parent " + wrapper.parentName);
+                        continue;
+                    } else {
+                        group = new Group(wrapper.name, wrapper.permissions, parent);
+                    }
+                }
+                permissionManager.addGroup(group);
+            }
 
 
             MyPermissions.instance.LOG.info("Loaded GroupConfig file successfully!");
@@ -66,7 +93,6 @@ public class GroupConfig extends JSONConfig<GroupConfig.Wrapper> {
 
     @Override
     protected void update(List<Wrapper> items) {
-        write(items);
     }
 
     public class Wrapper {

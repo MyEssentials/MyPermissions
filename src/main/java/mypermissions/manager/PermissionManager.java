@@ -9,13 +9,6 @@ import java.util.*;
 
 public class PermissionManager implements IPermissionManager {
 
-    private static PermissionManager instance;
-    public static PermissionManager getInstance() {
-        if(instance == null)
-            instance = new PermissionManager();
-        return instance;
-    }
-
     private List<Group> groups = new ArrayList<Group>();
     private Map<EntityPlayer, Group> playerGroup = new HashMap<EntityPlayer, Group>();
 

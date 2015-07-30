@@ -2,17 +2,20 @@ package mypermissions;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.*;
-import myessentials.command.CommandManagerNew;
+import myessentials.command.CommandManager;
 import myessentials.config.ConfigProcessor;
-import mypermissions.commands.MyPermissionsCommands;
+import mypermissions.commands.Commands;
 import mypermissions.config.Config;
 import mypermissions.config.json.GroupConfig;
+import mypermissions.localization.LocalizationProxy;
+import mypermissions.localization.PermissionsProxy;
+import mypermissions.manager.PermissionManager;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 
-@Mod(modid = Constants.MODID, name = Constants.MODNAME, version = Constants.VERSION, dependencies = Constants.DEPENDENCIES)
+@Mod(modid = Constants.MODID, name = Constants.MODNAME, version = Constants.VERSION, dependencies = Constants.DEPENDENCIES, acceptableRemoteVersions = "*")
 public class MyPermissions {
     public Configuration config;
     public Logger LOG;
@@ -42,8 +45,8 @@ public class MyPermissions {
 
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent ev) {
-        groupConfig = new GroupConfig(Constants.CONFIG_FOLDER + "GroupConfig.json");
-        CommandManagerNew.registerCommands(MyPermissionsCommands.class, null, );
+        groupConfig = new GroupConfig(Constants.CONFIG_FOLDER + "GroupConfig.json", (PermissionManager) PermissionsProxy.getPermissionManager());
+        CommandManager.registerCommands(Commands.class, null, LocalizationProxy.getLocalization());
         groupConfig.init();
     }
 
