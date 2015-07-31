@@ -17,42 +17,16 @@ public class GroupConfig extends JSONConfig<GroupConfig.Wrapper> {
     private MyPermissionsManager permissionManager;
 
     public GroupConfig(String path, MyPermissionsManager permissionManager) {
-        super(path);
+        super(path, "GroupConfig");
         this.permissionManager = permissionManager;
         this.gsonType = new TypeToken<List<Wrapper>>() {}.getType();
     }
 
     @Override
-    protected List<Wrapper> create() {
-        List<Wrapper> wrappers = new ArrayList<Wrapper>();
-        try {
-            Wrapper defaultGroup = new Wrapper("default", new ArrayList<String>(), null);
-            wrappers.add(defaultGroup);
-            write(wrappers);
+    protected void create(List<Wrapper> items) {
+        items.add(new Wrapper("default", new ArrayList<String>(), null));
 
-            Writer writer = new FileWriter(path);
-            gson.toJson(wrappers, gsonType, writer);
-            writer.close();
-            MyPermissions.instance.LOG.info("Successfully loaded GroupConfig!");
-        } catch (Exception e) {
-            MyPermissions.instance.LOG.info("Failed to load GroupConfig!");
-            MyPermissions.instance.LOG.info(ExceptionUtils.getStackTrace(e));
-        }
-        return wrappers;
-    }
-
-    @Override
-    public void write(List<Wrapper> items) {
-        try {
-            Writer writer = new FileWriter(path);
-            gson.toJson(items, gsonType, writer);
-            writer.close();
-
-            MyPermissions.instance.LOG.info("Updated GroupConfig file successfully!");
-        } catch (IOException e) {
-            MyPermissions.instance.LOG.error("Failed to update GroupConfig file!");
-            MyPermissions.instance.LOG.error(ExceptionUtils.getStackTrace(e));
-        }
+        super.create(items);
     }
 
     @Override
@@ -63,12 +37,7 @@ public class GroupConfig extends JSONConfig<GroupConfig.Wrapper> {
             wrappers = gson.fromJson(reader, gsonType);
             reader.close();
 
-            if(wrappers.size() == 0) {
-                // Adding a default group
-                Wrapper defaultGroup = new Wrapper("default", new ArrayList<String>(), null);
-                wrappers.add(defaultGroup);
-                write(wrappers);
-            }
+
 
             for (Wrapper wrapper : wrappers) {
                 Group group;
@@ -96,7 +65,15 @@ public class GroupConfig extends JSONConfig<GroupConfig.Wrapper> {
     }
 
     @Override
-    protected void update(List<Wrapper> items) {
+    protected boolean validate(List<Wrapper> items) {
+        boolean isValid = true;
+        if(items.size() == 0) {
+            // Adding a default group
+            Wrapper defaultGroup = new Wrapper("default", new ArrayList<String>(), null);
+            items.add(defaultGroup);
+            isValid = false;
+        }
+        return isValid;
     }
 
     public class Wrapper {

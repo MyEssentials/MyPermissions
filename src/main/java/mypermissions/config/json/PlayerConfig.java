@@ -2,60 +2,56 @@ package mypermissions.config.json;
 
 
 import com.google.common.reflect.TypeToken;
+import myessentials.MyEssentialsCore;
 import myessentials.json.JSONConfig;
-import mypermissions.MyPermissions;
-import org.apache.commons.lang3.exception.ExceptionUtils;
+import myessentials.utils.PlayerUtils;
+import mypermissions.entities.Group;
+import mypermissions.manager.MyPermissionsManager;
+import net.minecraft.entity.player.EntityPlayer;
 
-import java.io.FileWriter;
-import java.io.Writer;
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 public class PlayerConfig extends JSONConfig<PlayerConfig.Wrapper> {
 
-    public PlayerConfig(String path) {
-        super(path);
-        gsonType = new TypeToken<List<Wrapper>>() {}.getType();
+    private MyPermissionsManager permissionsManager;
+
+    public PlayerConfig(String path, MyPermissionsManager permissionsManager) {
+        super(path, "PlayerConfig");
+        this.permissionsManager = permissionsManager;
+        this.gsonType = new TypeToken<List<Wrapper>>() {}.getType();
     }
 
     @Override
-    protected List<PlayerConfig.Wrapper> create() {
-        List<Wrapper> wrappers = new ArrayList<Wrapper>();
+    protected List<Wrapper> read() {
+        List<Wrapper> items = super.read();
 
-        try {
-            Writer writer = new FileWriter(path);
-            gson.toJson(wrappers, gsonType, writer);
-            writer.close();
-            MyPermissions.instance.LOG.info("Successfully loaded PlayerConfig!");
-        } catch (Exception e) {
-            MyPermissions.instance.LOG.error("Failed to create PlayerConfig");
-            MyPermissions.instance.LOG.error(ExceptionUtils.getStackTrace(e));
+        for(Wrapper item : items) {
+            EntityPlayer player = PlayerUtils.getPlayerFromUUID(UUID.fromString(item.uuid));
+            Group group = permissionsManager.getGroup(item.groupName);
+            permissionsManager.linkPlayer(player, group);
         }
 
-        return wrappers;
+        return items;
     }
 
     @Override
-    public void write(List<PlayerConfig.Wrapper> items) {
-        try {
-            Writer writer = new FileWriter(path);
-            gson.toJson(items, gsonType, writer);
-            writer.close();
-            MyPermissions.instance.LOG.info("Successfully loaded PlayerConfig!");
-        } catch (Exception e) {
-            MyPermissions.instance.LOG.error("Failed to create PlayerConfig");
-            MyPermissions.instance.LOG.error(ExceptionUtils.getStackTrace(e));
+    protected boolean validate(List<Wrapper> items) {
+        boolean isValid = true;
+
+        for(Iterator<Wrapper> it = items.iterator(); it.hasNext(); ) {
+            Wrapper item = it.next();
+            Group group = permissionsManager.getGroup(item.groupName);
+
+            if(group == null) {
+                MyEssentialsCore.instance.LOG.error("Group with name " + item.groupName + " does not exist! Removing...");
+                it.remove();
+                isValid = false;
+            }
         }
-    }
 
-    @Override
-    protected List<PlayerConfig.Wrapper> read() {
-        return null;
-    }
-
-    @Override
-    protected void update(List<PlayerConfig.Wrapper> items) {
-
+        return isValid;
     }
 
     public class Wrapper {
