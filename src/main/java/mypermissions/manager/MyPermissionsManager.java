@@ -1,23 +1,26 @@
 package mypermissions.manager;
 
 import com.google.common.collect.ImmutableList;
+import myessentials.utils.PlayerUtils;
 import mypermissions.api.IPermissionManager;
 import mypermissions.entities.Group;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.*;
 
-public class PermissionManager implements IPermissionManager {
+public class MyPermissionsManager implements IPermissionManager {
 
     private List<Group> groups = new ArrayList<Group>();
     private Map<EntityPlayer, Group> playerGroup = new HashMap<EntityPlayer, Group>();
 
-    public PermissionManager() {
+    public MyPermissionsManager() {
     }
 
     @Override
-    public boolean hasPermission(EntityPlayer player, String permission) {
-        return false;
+    public boolean hasPermission(UUID uuid, String permission) {
+        EntityPlayer player = PlayerUtils.getPlayerFromUUID(uuid);
+        Group group = getPlayerGroup(player);
+        return group.hasPermission(permission);
     }
 
     public void addGroup(Group group) {

@@ -8,8 +8,8 @@ import mypermissions.commands.Commands;
 import mypermissions.config.Config;
 import mypermissions.config.json.GroupConfig;
 import mypermissions.localization.LocalizationProxy;
-import mypermissions.localization.PermissionsProxy;
-import mypermissions.manager.PermissionManager;
+import mypermissions.localization.PermissionProxy;
+import mypermissions.manager.MyPermissionsManager;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.logging.log4j.Logger;
 
@@ -45,9 +45,11 @@ public class MyPermissions {
 
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent ev) {
-        groupConfig = new GroupConfig(Constants.CONFIG_FOLDER + "GroupConfig.json", (PermissionManager) PermissionsProxy.getPermissionManager());
         CommandManager.registerCommands(Commands.class, null, LocalizationProxy.getLocalization());
-        groupConfig.init();
+        if(PermissionProxy.getPermissionManager() instanceof MyPermissionsManager) {
+            groupConfig = new GroupConfig(Constants.CONFIG_FOLDER + "GroupConfig.json", (MyPermissionsManager) PermissionProxy.getPermissionManager());
+            groupConfig.init();
+        }
     }
 
     @Mod.EventHandler

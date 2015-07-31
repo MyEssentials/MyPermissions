@@ -1,11 +1,9 @@
 package mypermissions.api;
 
-import net.minecraft.entity.player.EntityPlayer;
+import java.util.UUID;
 
 public interface IPermissionManager {
 
-
-
-    boolean hasPermission(EntityPlayer player, String permission);
+    boolean hasPermission(UUID uuid, String permission);
 
 }

@@ -39,4 +39,8 @@ public class Group {
 
         return result;
     }
+
+    public boolean hasPermission(String permission) {
+        return permissions.contains(permission);
+    }
 }

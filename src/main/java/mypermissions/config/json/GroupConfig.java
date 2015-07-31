@@ -5,7 +5,7 @@ import myessentials.MyEssentialsCore;
 import myessentials.json.JSONConfig;
 import mypermissions.MyPermissions;
 import mypermissions.entities.Group;
-import mypermissions.manager.PermissionManager;
+import mypermissions.manager.MyPermissionsManager;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.io.*;
@@ -14,9 +14,9 @@ import java.util.List;
 
 public class GroupConfig extends JSONConfig<GroupConfig.Wrapper> {
 
-    private PermissionManager permissionManager;
+    private MyPermissionsManager permissionManager;
 
-    public GroupConfig(String path, PermissionManager permissionManager) {
+    public GroupConfig(String path, MyPermissionsManager permissionManager) {
         super(path);
         this.permissionManager = permissionManager;
         this.gsonType = new TypeToken<List<Wrapper>>() {}.getType();
@@ -26,6 +26,10 @@ public class GroupConfig extends JSONConfig<GroupConfig.Wrapper> {
     protected List<Wrapper> create() {
         List<Wrapper> wrappers = new ArrayList<Wrapper>();
         try {
+            Wrapper defaultGroup = new Wrapper("default", new ArrayList<String>(), null);
+            wrappers.add(defaultGroup);
+            write(wrappers);
+
             Writer writer = new FileWriter(path);
             gson.toJson(wrappers, gsonType, writer);
             writer.close();
