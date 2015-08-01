@@ -2,7 +2,7 @@ package mypermissions;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.*;
-import myessentials.command.CommandManager;
+import mypermissions.command.CommandManager;
 import myessentials.config.ConfigProcessor;
 import mypermissions.commands.Commands;
 import mypermissions.config.Config;
