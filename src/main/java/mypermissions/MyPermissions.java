@@ -45,7 +45,7 @@ public class MyPermissions {
 
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent ev) {
-        CommandManager.registerCommands(Commands.class, null, LocalizationProxy.getLocalization());
+        CommandManager.registerCommands(Commands.class, null, LocalizationProxy.getLocalization(), null);
         if(PermissionProxy.getPermissionManager() instanceof MyPermissionsManager) {
             groupConfig = new GroupConfig(Constants.CONFIG_FOLDER + "GroupConfig.json", (MyPermissionsManager) PermissionProxy.getPermissionManager());
             groupConfig.init();

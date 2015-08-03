@@ -38,5 +38,4 @@ public class Commands {
         ChatUtils.sendChat(sender, "Reloaded config!");
         return CommandResponse.DONE;
     }
-
 }

@@ -3,6 +3,7 @@ package mypermissions.command;
 import cpw.mods.fml.common.Loader;
 import myessentials.Localization;
 import myessentials.MyEssentialsCore;
+import mypermissions.api.IPermissionManager;
 import mypermissions.command.annotation.Command;
 import mypermissions.command.registrar.BukkitCommandRegistrar;
 import mypermissions.command.registrar.ForgeEssentialsCommandRegistrar;
@@ -32,7 +33,7 @@ public class CommandManager {
     /**
      * It is enforced that the class has to contain ONE root command .
      */
-    public static void registerCommands(Class clazz, String rootPerm, Localization local) {
+    public static void registerCommands(Class clazz, String rootPerm, Localization local, IPermissionManager customManager) {
         CommandTreeNode root = null;
         CommandTree commandTree = rootPerm == null ? null : getTree(rootPerm);
 
@@ -61,7 +62,7 @@ public class CommandManager {
             if (root == null) {
                 throw new CommandException("Class " + clazz.getName() + " has no root command.");
             } else {
-                commandTree = new CommandTree(root, local);
+                commandTree = new CommandTree(root, local, customManager);
                 commandTrees.add(commandTree);
             }
         }
