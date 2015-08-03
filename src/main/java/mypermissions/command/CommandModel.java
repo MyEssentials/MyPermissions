@@ -1,8 +1,11 @@
 package mypermissions.command;
 
+import cpw.mods.fml.common.Optional;
 import mypermissions.localization.PermissionProxy;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
+import net.minecraftforge.permission.PermissionLevel;
+import net.minecraftforge.permission.PermissionObject;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +13,9 @@ import java.util.List;
 /**
  * Command model which instantiates all base commands that need to be registered to Minecraft
  */
-public class CommandModel extends CommandBase {
+@Optional.InterfaceList({
+        @Optional.Interface(iface = "net.minecraftforge.permission.PermissionObject", modid = "ForgeEssentials")})
+public class CommandModel extends CommandBase implements PermissionObject {
 
     private CommandTree commandTree;
 
@@ -58,5 +63,15 @@ public class CommandModel extends CommandBase {
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender sender) {
         return true;
+    }
+
+    @Override
+    public String getPermissionNode() {
+        return commandTree.getRoot().getAnnotation().permission();
+    }
+
+    @Override
+    public PermissionLevel getPermissionLevel() {
+        return PermissionLevel.FALSE;
     }
 }
