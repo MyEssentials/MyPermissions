@@ -7,9 +7,10 @@ import net.minecraftforge.permission.PermissionManager;
 /**
  * ForgeEssentials command registrar.
  */
-public class ForgeEssentialsCommandRegistrar implements ICommandRegistrar {
+public class ForgeEssentialsCommandRegistrar extends VanillaCommandRegistrar {
     @Override
     public void registerCommand(ICommand cmd, String permNode, boolean defaultPerm) {
         PermissionManager.registerPermission(permNode, PermissionLevel.fromBoolean(defaultPerm));
+        super.registerCommand(cmd, permNode, defaultPerm);
     }
 }
