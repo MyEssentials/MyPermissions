@@ -13,3 +13,10 @@ notifications:
 cache:
   directories:
   - $HOME/.gradle/caches/
+deploy:
+  - provider: script
+    script: gradle curse
+    on:
+      tags: true
+      repo: MyEssentials/MyEssentials-Core
+      all_branches: true
