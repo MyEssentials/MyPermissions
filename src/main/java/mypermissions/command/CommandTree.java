@@ -35,8 +35,9 @@ public class CommandTree extends Tree<CommandTreeNode> {
             args = args.subList(1, args.size());
         }
 
-        if(hasPermission(sender, node))
+        if(hasPermission(sender, node)) {
             node.commandCall(sender, args);
+        }
     }
 
     public CommandTreeNode getNodeFromArgs(List<String> args) {
