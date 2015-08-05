@@ -20,8 +20,6 @@ public class MyPermissions {
     public Configuration config;
     public Logger LOG;
 
-    public GroupConfig groupConfig;
-
     @Mod.Instance(Constants.MODID)
     public static MyPermissions instance;
 
@@ -29,10 +27,12 @@ public class MyPermissions {
     public void preInit(FMLPreInitializationEvent ev) {
         LOG = ev.getModLog();
         Constants.CONFIG_FOLDER = ev.getModConfigurationDirectory().getPath() + "/MyPermissions/";
+    }
 
-        // Read Configs
-        config = new Configuration(new File(Constants.CONFIG_FOLDER, "MyTown.cfg"));
+    public void loadConfig() {
+        config = new Configuration(new File(Constants.CONFIG_FOLDER, "MyPermissions.cfg"));
         ConfigProcessor.load(config, Config.class);
+        PermissionProxy.init();
     }
 
     @Mod.EventHandler
@@ -45,11 +45,8 @@ public class MyPermissions {
 
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent ev) {
+        loadConfig();
         CommandManager.registerCommands(Commands.class, null, LocalizationProxy.getLocalization(), null);
-        if(PermissionProxy.getPermissionManager() instanceof MyPermissionsManager) {
-            groupConfig = new GroupConfig(Constants.CONFIG_FOLDER + "GroupConfig.json", (MyPermissionsManager) PermissionProxy.getPermissionManager());
-            groupConfig.init();
-        }
     }
 
     @Mod.EventHandler

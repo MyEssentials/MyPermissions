@@ -4,6 +4,8 @@ import mypermissions.command.CommandResponse;
 import mypermissions.command.annotation.Command;
 import myessentials.utils.ChatUtils;
 import mypermissions.MyPermissions;
+import mypermissions.localization.PermissionProxy;
+import mypermissions.manager.MyPermissionsManager;
 import net.minecraft.command.ICommandSender;
 
 import java.util.List;
@@ -34,8 +36,14 @@ public class Commands {
             parentName = "mypermissions.cmd.config",
             syntax = "/perm config reload")
     public static CommandResponse configReloadCommand(ICommandSender sender, List<String> args) {
-        MyPermissions.instance.groupConfig.init();
-        ChatUtils.sendChat(sender, "Reloaded config!");
+        MyPermissions.instance.loadConfig();
+        ChatUtils.sendChat(sender, "Successfully reloaded mod configs!");
+        if(PermissionProxy.getPermissionManager() instanceof MyPermissions) {
+            ((MyPermissionsManager) PermissionProxy.getPermissionManager()).loadConfigs();
+            ChatUtils.sendChat(sender, "Successfully reloaded permission configs!");
+        } else {
+            ChatUtils.sendChat(sender, "Currently using third party permission system.");
+        }
         return CommandResponse.DONE;
     }
 }

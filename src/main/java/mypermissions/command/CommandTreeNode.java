@@ -52,6 +52,8 @@ public class CommandTreeNode extends TreeNode<CommandTreeNode> {
     }
 
     public void commandCall(ICommandSender sender, List<String> args) {
+
+
         /*
         // Check if the player has access to the command using the firstpermissionbreach method first
         Method permMethod = firstPermissionBreaches.get(permission);
