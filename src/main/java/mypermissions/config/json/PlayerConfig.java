@@ -9,9 +9,7 @@ import mypermissions.entities.Group;
 import mypermissions.manager.MyPermissionsManager;
 import net.minecraft.entity.player.EntityPlayer;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class PlayerConfig extends JSONConfig<PlayerConfig.Wrapper> {
 
@@ -52,6 +50,16 @@ public class PlayerConfig extends JSONConfig<PlayerConfig.Wrapper> {
         }
 
         return isValid;
+    }
+
+    public List<Wrapper> convert(Map<EntityPlayer, Group> playerGroup) {
+        List<Wrapper> wrapperList = new ArrayList<Wrapper>();
+
+        for(Map.Entry<EntityPlayer, Group> entry : playerGroup.entrySet()) {
+            wrapperList.add(new Wrapper(entry.getKey().getUniqueID().toString(), entry.getValue().getName()));
+        }
+
+        return wrapperList;
     }
 
     public class Wrapper {

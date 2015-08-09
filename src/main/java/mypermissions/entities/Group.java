@@ -1,5 +1,7 @@
 package mypermissions.entities;
 
+import scala.actors.threadpool.Arrays;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,14 +12,14 @@ import java.util.List;
  */
 public class Group {
 
-    private Group parent;
+    private List<Group> parents = new ArrayList<Group>();
     private List<String> permissions = new ArrayList<String>();
     private String name;
 
-    public Group(String name, List<String> permissions, Group parent) {
+    public Group(String name, List<String> permissions, List<Group> parents) {
         this.name = name;
         this.permissions = permissions;
-        this.parent = parent;
+        this.parents.addAll(parents);
     }
 
     public Group(String name, List<String> permissions) {
@@ -28,13 +30,20 @@ public class Group {
         return name;
     }
 
-    public List<String> getPermissions() {
-        List<String> result = new ArrayList<String>();
+    public List<Group> getParents() {
+        return parents;
+    }
 
+    public List<String> getPermissions() {
+        return permissions;
+    }
+
+    public List<String> getPermissionsAndSuperPermissions() {
+        List<String> result = new ArrayList<String>();
         result.addAll(permissions);
 
-        if(parent != null) {
-            result.addAll(getPermissions());
+        for(Group parent : parents) {
+            result.addAll(parent.getPermissionsAndSuperPermissions());
         }
 
         return result;

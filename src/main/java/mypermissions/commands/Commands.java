@@ -4,10 +4,13 @@ import mypermissions.command.CommandResponse;
 import mypermissions.command.annotation.Command;
 import myessentials.utils.ChatUtils;
 import mypermissions.MyPermissions;
+import mypermissions.entities.Group;
+import mypermissions.exception.PermissionCommandException;
 import mypermissions.localization.PermissionProxy;
 import mypermissions.manager.MyPermissionsManager;
 import net.minecraft.command.ICommandSender;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Commands {
@@ -45,5 +48,45 @@ public class Commands {
             ChatUtils.sendChat(sender, "Currently using third party permission system.");
         }
         return CommandResponse.DONE;
+    }
+
+    @Command(
+            name = "group",
+            permission = "mypermissions.cmd.group",
+            parentName = "mypermissions.cmd",
+            syntax = "/perm group <command>")
+    public static CommandResponse groupCommand(ICommandSender sender, List<String> args) {
+        return CommandResponse.SEND_HELP_MESSAGE;
+    }
+
+    @Command(
+            name = "create",
+            permission = "mypermissions.cmd.group.create",
+            parentName = "mypermissions.cmd.group",
+            syntax = "/perm group create <name> [parents]")
+    public static CommandResponse groupCreateCommand(ICommandSender sender, List<String> args) {
+        if(!(PermissionProxy.getPermissionManager() instanceof MyPermissionsManager))
+            throw new PermissionCommandException("mypermissions.cmd.err.notAvailable");
+        if(args.size() < 1)
+            return CommandResponse.SEND_SYNTAX;
+
+        Group group = new Group(args.get(0), new ArrayList<String>());
+        getPermissionManager().addGroup(group);
+        getPermissionManager().groupConfig.write(getPermissionManager().groupConfig.convert(getPermissionManager().getGroups()));
+
+        return CommandResponse.DONE;
+    }
+
+    @Command(
+            name = "rename",
+            permission = "mypermissions.cmd.group.rename",
+            parentName = "mypermissions.cmd.group",
+            syntax = "/perm group rename <group> <name>")
+    public static CommandResponse groupRenameCommand(ICommandSender sender, List<String> args) {
+        return CommandResponse.DONE;
+    }
+
+    private static MyPermissionsManager getPermissionManager() {
+        return (MyPermissionsManager) PermissionProxy.getPermissionManager();
     }
 }

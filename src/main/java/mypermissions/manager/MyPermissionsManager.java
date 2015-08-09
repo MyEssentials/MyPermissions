@@ -21,8 +21,8 @@ public class MyPermissionsManager implements IPermissionManager {
     private List<Group> groups = new ArrayList<Group>();
     private Map<EntityPlayer, Group> playerGroup = new HashMap<EntityPlayer, Group>();
 
-    private GroupConfig groupConfig = new GroupConfig(Constants.CONFIG_FOLDER + "GroupConfig.json", this);
-    private PlayerConfig playerConfig = new PlayerConfig(Constants.CONFIG_FOLDER + "PlayerConfig.json", this);
+    public final GroupConfig groupConfig = new GroupConfig(Constants.CONFIG_FOLDER + "GroupConfig.json", this);
+    public final PlayerConfig playerConfig = new PlayerConfig(Constants.CONFIG_FOLDER + "PlayerConfig.json", this);
 
     public MyPermissionsManager() {
     }
@@ -32,10 +32,14 @@ public class MyPermissionsManager implements IPermissionManager {
         playerConfig.init();
     }
 
+    public void saveConfigs() {
+        groupConfig.write(groupConfig.convert(groups));
+        playerConfig.write(playerConfig.convert(playerGroup));
+    }
+
     @Override
     public boolean hasPermission(UUID uuid, String permission) {
         EntityPlayer player = PlayerUtils.getPlayerFromUUID(uuid);
-        MyPermissions.instance.LOG.info("Checking permission for " + player.getDisplayName() + " for perm " + permission);
         Group group = getPlayerGroup(player);
         return group.hasPermission(permission);
     }
@@ -87,7 +91,7 @@ public class MyPermissionsManager implements IPermissionManager {
         if(group == null) {
             group = getGroup(DEFAULT_GROUP_NAME);
             playerGroup.put(player, group);
-
+            playerConfig.write(playerConfig.convert(playerGroup));
         }
         return group;
     }
