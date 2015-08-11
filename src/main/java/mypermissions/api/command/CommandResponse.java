@@ -1,4 +1,4 @@
-package mypermissions.command;
+package mypermissions.api.command;
 
 /**
  * This is what is returned after a command finished its processing.

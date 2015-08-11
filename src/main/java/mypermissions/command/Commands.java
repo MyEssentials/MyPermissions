@@ -1,10 +1,10 @@
-package mypermissions.commands;
+package mypermissions.command;
 
-import mypermissions.command.CommandResponse;
-import mypermissions.command.annotation.Command;
+import mypermissions.api.command.CommandResponse;
+import mypermissions.api.command.annotation.Command;
 import myessentials.utils.ChatUtils;
 import mypermissions.MyPermissions;
-import mypermissions.entities.Group;
+import mypermissions.api.entities.Group;
 import mypermissions.exception.PermissionCommandException;
 import mypermissions.localization.PermissionProxy;
 import mypermissions.manager.MyPermissionsManager;
@@ -70,9 +70,9 @@ public class Commands {
         if(args.size() < 1)
             return CommandResponse.SEND_SYNTAX;
 
-        Group group = new Group(args.get(0), new ArrayList<String>());
-        getPermissionManager().addGroup(group);
-        getPermissionManager().groupConfig.write(getPermissionManager().groupConfig.convert(getPermissionManager().getGroups()));
+        Group group = new Group(args.get(0), null, null, null);
+        getPermissionManager().groups.add(group);
+        getPermissionManager().groupConfig.write(getPermissionManager().groups);
 
         return CommandResponse.DONE;
     }

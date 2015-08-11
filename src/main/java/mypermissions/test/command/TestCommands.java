@@ -1,7 +1,7 @@
 package mypermissions.test.command;
 
 
-import mypermissions.command.annotation.Command;
+import mypermissions.api.command.annotation.Command;
 import net.minecraft.command.ICommandSender;
 
 import java.util.List;

@@ -2,14 +2,12 @@ package mypermissions;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.*;
-import mypermissions.command.CommandManager;
+import mypermissions.api.command.CommandManager;
 import myessentials.config.ConfigProcessor;
-import mypermissions.commands.Commands;
+import mypermissions.command.Commands;
 import mypermissions.config.Config;
-import mypermissions.config.json.GroupConfig;
 import mypermissions.localization.LocalizationProxy;
 import mypermissions.localization.PermissionProxy;
-import mypermissions.manager.MyPermissionsManager;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.logging.log4j.Logger;
 

@@ -1,4 +1,4 @@
-package mypermissions.command;
+package mypermissions.api.command;
 
 import java.util.*;
 

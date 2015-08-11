@@ -1,8 +1,6 @@
 package mypermissions.command.registrar;
 
 import net.minecraft.command.ICommand;
-import net.minecraftforge.permission.PermissionLevel;
-import net.minecraftforge.permission.PermissionManager;
 
 /**
  * ForgeEssentials command registrar.

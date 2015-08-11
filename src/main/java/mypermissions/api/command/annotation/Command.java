@@ -1,4 +1,4 @@
-package mypermissions.command.annotation;
+package mypermissions.api.command.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

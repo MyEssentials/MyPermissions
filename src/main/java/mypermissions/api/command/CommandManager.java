@@ -1,16 +1,19 @@
-package mypermissions.command;
+package mypermissions.api.command;
 
 import cpw.mods.fml.common.Loader;
 import myessentials.Localization;
 import myessentials.MyEssentialsCore;
 import mypermissions.api.IPermissionManager;
-import mypermissions.command.annotation.Command;
+import mypermissions.api.command.annotation.Command;
 import mypermissions.command.registrar.BukkitCommandRegistrar;
 import mypermissions.command.registrar.ForgeEssentialsCommandRegistrar;
 import mypermissions.command.registrar.ICommandRegistrar;
 import mypermissions.command.registrar.VanillaCommandRegistrar;
 import myessentials.exception.CommandException;
 import myessentials.utils.ClassUtils;
+import mypermissions.command.CommandModel;
+import mypermissions.command.CommandTree;
+import mypermissions.command.CommandTreeNode;
 import net.minecraft.command.ICommandSender;
 
 import java.lang.reflect.Method;
