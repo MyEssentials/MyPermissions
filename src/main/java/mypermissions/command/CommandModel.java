@@ -73,6 +73,7 @@ public class CommandModel extends CommandBase implements PermissionObject {
     }
 
     @Override
+    @Optional.Method(modid = "ForgeEssentials")
     public PermissionLevel getPermissionLevel() {
         return PermissionLevel.fromBoolean(!(PermissionProxy.getPermissionManager() instanceof ForgeEssentialsPermissionManager));
     }
