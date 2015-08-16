@@ -1,13 +1,13 @@
 package mypermissions.api.container;
 
-
-import myessentials.entities.Container;
 import mypermissions.api.entities.Meta;
 
-public class MetaContainer extends Container<Meta> {
+import java.util.ArrayList;
+
+public class MetaContainer extends ArrayList<Meta> {
 
     public Meta get(String permission) {
-        for(Meta item : items) {
+        for(Meta item : this) {
             if(item.permission.equals(permission)) {
                 return item;
             }

@@ -21,7 +21,7 @@ public class Group {
 
     public Group(String name, List<String> permissions, List<Group> parents, Type type) {
         this.name = name;
-        this.permsContainer.add(permissions);
+        this.permsContainer.addAll(permissions);
         if(parents != null) {
             this.parents.addAll(parents);
         }

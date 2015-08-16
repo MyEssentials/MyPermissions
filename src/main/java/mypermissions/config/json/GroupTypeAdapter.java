@@ -23,13 +23,13 @@ public class GroupTypeAdapter extends TypeAdapter<List<Group>> {
                 out.name("name").value(group.name);
                 out.name("type").value(group.type.toString());
                 out.name("permissions").beginArray(); {
-                    for (String permission : group.permsContainer.asList()) {
+                    for (String permission : group.permsContainer) {
                         out.value(permission);
                     }
                 } out.endArray();
 
                 out.name("meta").beginObject(); {
-                    for (Meta meta : group.metaContainer.asList()) {
+                    for (Meta meta : group.metaContainer) {
                         out.name(meta.permission).value(meta.metadata);
                     }
                 } out.endObject();
@@ -119,7 +119,7 @@ public class GroupTypeAdapter extends TypeAdapter<List<Group>> {
             throw new IOException("Name in a group was null in file GroupConfig");
         }
         Group group = new Group(name, permissions, null, type);
-        group.metaContainer.add(metaList);
+        group.metaContainer.addAll(metaList);
         groups.add(group);
         parentsMap.put(name, parents);
     }

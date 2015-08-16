@@ -27,13 +27,13 @@ public class UserTypeAdapter extends TypeAdapter<List<User>>{
             out.name("group").value(user.group.name);
 
             out.name("permissions").beginArray();
-            for(String permission : user.permsContainer.asList()) {
+            for(String permission : user.permsContainer) {
                 out.value(permission);
             }
             out.endArray();
 
             out.name("meta").beginObject();
-            for(Meta meta : user.metaContainer.asList()) {
+            for(Meta meta : user.metaContainer) {
                 out.name(meta.permission).value(meta.metadata);
             }
             out.endObject();
@@ -100,8 +100,8 @@ public class UserTypeAdapter extends TypeAdapter<List<User>>{
             }
 
             User user = new User(uuid, group);
-            user.metaContainer.add(metaList);
-            user.permsContainer.add(permissions);
+            user.metaContainer.addAll(metaList);
+            user.permsContainer.addAll(permissions);
             users.add(user);
         }
         in.endArray();
