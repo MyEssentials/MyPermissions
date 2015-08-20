@@ -87,6 +87,15 @@ public class CommandManager {
         return null;
     }
 
+    public static CommandTree getTreeFromPermission(String perm) {
+        for(CommandTree tree : commandTrees) {
+            if(tree.hasCommandNode(perm)) {
+                return tree;
+            }
+        }
+        return null;
+    }
+
     private static CommandTreeNode findNode(CommandTreeNode root, String perm) {
         if(root.getAnnotation().permission().equals(perm))
             return root;
