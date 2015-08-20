@@ -24,7 +24,7 @@ public class UserTypeAdapter extends TypeAdapter<List<User>>{
             out.beginObject();
 
             out.name("uuid").value(user.uuid.toString());
-            out.name("group").value(user.group.name);
+            out.name("group").value(user.group.getName());
 
             out.name("permissions").beginArray();
             for(String permission : user.permsContainer) {
@@ -66,7 +66,7 @@ public class UserTypeAdapter extends TypeAdapter<List<User>>{
                     groupName = in.nextString();
                 }
 
-                if ("permisions".equals(nextName)) {
+                if ("permissions".equals(nextName)) {
                     in.beginArray();
                     while(in.peek() != JsonToken.END_ARRAY) {
                         permissions.add(in.nextString());
@@ -93,7 +93,7 @@ public class UserTypeAdapter extends TypeAdapter<List<User>>{
             }
 
             MyPermissionsManager permissionsManager = (MyPermissionsManager) PermissionProxy.getPermissionManager();
-            Group group = permissionsManager.getGroup(groupName);
+            Group group = permissionsManager.groups.get(groupName);
 
             if(group == null) {
                 throw new IOException("Group " + groupName + " does not exist.");

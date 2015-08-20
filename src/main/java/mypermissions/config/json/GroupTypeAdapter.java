@@ -20,8 +20,8 @@ public class GroupTypeAdapter extends TypeAdapter<List<Group>> {
         out.beginArray();
         for(Group group : groups) {
             out.beginObject(); {
-                out.name("name").value(group.name);
-                out.name("type").value(group.type.toString());
+                out.name("name").value(group.getName());
+                out.name("type").value(group.getType().toString());
                 out.name("permissions").beginArray(); {
                     for (String permission : group.permsContainer) {
                         out.value(permission);
@@ -58,7 +58,7 @@ public class GroupTypeAdapter extends TypeAdapter<List<Group>> {
     private void convertGroups(List<Group> groups, Map<String, List<String>> parentsMap) throws IOException {
         for(Map.Entry<String, List<String>> entry : parentsMap.entrySet()) {
             Group group = getGroup(groups, entry.getKey());
-            if(group.name.equals(entry.getKey())) {
+            if(group.getName().equals(entry.getKey())) {
                 List<Group> parents = new ArrayList<Group>();
                 for(String parentName : entry.getValue()) {
                     parents.add(getGroup(groups, parentName));
@@ -126,7 +126,7 @@ public class GroupTypeAdapter extends TypeAdapter<List<Group>> {
 
     public Group getGroup(List<Group> groups, String name) {
         for(Group group : groups) {
-            if(group.name.equals(name)) {
+            if(group.getName().equals(name)) {
                 return group;
             }
         }

@@ -45,6 +45,7 @@ public class MyPermissions {
     public void serverStarting(FMLServerStartingEvent ev) {
         loadConfig();
         CommandManager.registerCommands(Commands.class, null, LocalizationProxy.getLocalization(), null);
+        CommandManager.registerCommands(Commands.MyPermissionManagerCommands.class, "mypermissions.cmd", LocalizationProxy.getLocalization(), null);
     }
 
     @Mod.EventHandler

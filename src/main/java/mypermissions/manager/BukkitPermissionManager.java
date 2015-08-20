@@ -3,6 +3,7 @@ package mypermissions.manager;
 import mypermissions.api.IPermissionManager;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.permissions.Permission;
 
 import java.util.UUID;
 

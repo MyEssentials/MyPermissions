@@ -1,0 +1,11 @@
+mypermissions.cmd.err.group.notExist=&cThe group %s does not exist
+
+mypermissions.notification.group.added=&aGroup has been added successfully
+mypermissions.notification.group.renamed=&aGroup has been renamed successfully
+mypermissions.notification.group.removed=&aGroup has been deleted successfully
+mypermissions.notification.group.list=&aGroups: %s
+mypermissions.notification.group.perm.added=&aPermission added successfully
+mypermissions.notification.group.perm.removed=&aPermission removed successfully
+mypermissions.notification.group.perm.list=&a Permissions for group %s: %s
+
+mypermissions.cmd.group.list.help=&3Lists all groups

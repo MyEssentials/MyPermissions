@@ -1,5 +1,6 @@
 package mypermissions.api.entities;
 
+import mypermissions.api.container.GroupsContainer;
 import mypermissions.api.container.MetaContainer;
 import mypermissions.api.container.PermissionsContainer;
 
@@ -13,15 +14,18 @@ import java.util.List;
  */
 public class Group {
 
-    public final String name;
-    public final Type type;
+    private String name;
+    private Type type;
+
     public final PermissionsContainer permsContainer = new PermissionsContainer();
     public final MetaContainer metaContainer = new MetaContainer();
-    public final List<Group> parents = new ArrayList<Group>();
+    public final GroupsContainer parents = new GroupsContainer();
 
     public Group(String name, List<String> permissions, List<Group> parents, Type type) {
         this.name = name;
-        this.permsContainer.addAll(permissions);
+        if(permissions != null) {
+            this.permsContainer.addAll(permissions);
+        }
         if(parents != null) {
             this.parents.addAll(parents);
         }
@@ -30,6 +34,22 @@ public class Group {
         } else {
             this.type = type;
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     public enum Type {

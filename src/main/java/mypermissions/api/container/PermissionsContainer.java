@@ -17,6 +17,16 @@ public class PermissionsContainer extends ArrayList<String> {
         return false;
     }
 
-
-
+    @Override
+    public String toString() {
+        String formattedList = "";
+        for(String perm : this) {
+            if(formattedList.equals("")) {
+                formattedList += perm;
+            } else {
+                formattedList += "\\n" + perm;
+            }
+        }
+        return formattedList;
+    }
 }

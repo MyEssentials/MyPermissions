@@ -19,4 +19,9 @@ public class User {
         this.uuid = uuid;
         this.group = group;
     }
+
+    public boolean hasPermission(String permission) {
+        return permsContainer.hasSuperPermission(permission) || group.permsContainer.hasSuperPermission(permission);
+    }
+
 }
