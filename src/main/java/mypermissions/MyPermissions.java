@@ -8,6 +8,7 @@ import mypermissions.command.Commands;
 import mypermissions.config.Config;
 import mypermissions.localization.LocalizationProxy;
 import mypermissions.localization.PermissionProxy;
+import mypermissions.manager.MyPermissionsManager;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.logging.log4j.Logger;
 
@@ -45,7 +46,9 @@ public class MyPermissions {
     public void serverStarting(FMLServerStartingEvent ev) {
         loadConfig();
         CommandManager.registerCommands(Commands.class, null, LocalizationProxy.getLocalization(), null);
-        CommandManager.registerCommands(Commands.MyPermissionManagerCommands.class, "mypermissions.cmd", LocalizationProxy.getLocalization(), null);
+        if(PermissionProxy.getPermissionManager() instanceof MyPermissionsManager) {
+            CommandManager.registerCommands(Commands.MyPermissionManagerCommands.class, "mypermissions.cmd", LocalizationProxy.getLocalization(), null);
+        }
     }
 
     @Mod.EventHandler
