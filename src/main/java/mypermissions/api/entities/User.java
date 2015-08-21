@@ -10,8 +10,9 @@ import java.util.UUID;
  */
 public class User {
 
+    private Group group;
+
     public final UUID uuid;
-    public final Group group;
     public final PermissionsContainer permsContainer = new PermissionsContainer();
     public final MetaContainer metaContainer = new MetaContainer();
 
@@ -21,7 +22,23 @@ public class User {
     }
 
     public boolean hasPermission(String permission) {
-        return permsContainer.hasSuperPermission(permission) || group.permsContainer.hasSuperPermission(permission);
+        PermissionLevel permLevel = permsContainer.hasPermission(permission);
+
+        if(permLevel == PermissionLevel.ALLOWED) {
+            return true;
+        } else if(permLevel == PermissionLevel.DENIED){
+            return false;
+        }
+
+        permLevel = group.hasPermission(permission);
+        return permLevel == PermissionLevel.ALLOWED;
     }
 
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 }

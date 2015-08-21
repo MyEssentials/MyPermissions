@@ -25,7 +25,7 @@ public class GroupConfig extends JSONConfig<Group> {
 
     @Override
     protected void create(List<Group> items) {
-        items.add(new Group("default", null, null, null));
+        items.add(new Group("default", null, null, Group.Type.DEFAULT));
         super.create(items);
     }
 
@@ -40,10 +40,41 @@ public class GroupConfig extends JSONConfig<Group> {
 
     @Override
     protected boolean validate(List<Group> items) {
+
         if(items.size() == 0) {
-            create(items);
+            items.add(new Group("default", null, null, Group.Type.DEFAULT));
             return false;
         }
-        return true;
+
+        boolean valid = true;
+        boolean defaultGroup = false;
+
+        for(Group group : items) {
+            if(group.getType() == Group.Type.DEFAULT) {
+                if(defaultGroup) {
+                    group.setType(Group.Type.NORMAL);
+                    valid = false;
+                } else {
+                    defaultGroup = true;
+                }
+            }
+        }
+
+        if(!defaultGroup) {
+            for(Group group : items) {
+                if(group.getName().equals("default")) {
+                    group.setType(Group.Type.DEFAULT);
+                    defaultGroup = true;
+                    valid = false;
+                }
+            }
+        }
+
+        if(!defaultGroup) {
+            items.add(new Group("default", null, null, Group.Type.DEFAULT));
+            valid = false;
+        }
+
+        return valid;
     }
 }

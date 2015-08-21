@@ -24,7 +24,7 @@ public class UserTypeAdapter extends TypeAdapter<List<User>>{
             out.beginObject();
 
             out.name("uuid").value(user.uuid.toString());
-            out.name("group").value(user.group.getName());
+            out.name("group").value(user.getGroup().getName());
 
             out.name("permissions").beginArray();
             for(String permission : user.permsContainer) {

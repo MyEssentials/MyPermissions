@@ -1,20 +1,27 @@
 package mypermissions.api.container;
 
 
+import mypermissions.api.entities.PermissionLevel;
+
 import java.util.ArrayList;
 
 public class PermissionsContainer extends ArrayList<String> {
 
-    public boolean hasSuperPermission(String permission) {
-        if (contains(permission))
-            return true;
+    public PermissionLevel hasPermission(String permission) {
+        PermissionLevel permLevel = PermissionLevel.NONE;
+        if (contains(permission)) {
+            permLevel = PermissionLevel.ALLOWED;
+        }
 
         for (String p : this) {
             if (permission.startsWith(p)) {
-                return true;
+                permLevel = PermissionLevel.ALLOWED;
+            } else if(p.startsWith("-") && permission.startsWith(p.substring(1))) {
+                permLevel = PermissionLevel.DENIED;
             }
         }
-        return false;
+
+        return permLevel;
     }
 
     @Override

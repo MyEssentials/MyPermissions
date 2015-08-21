@@ -225,7 +225,12 @@ public class Commands {
             UUID uuid = getUUIDFromUsername(args.get(0));
             Group group = getGroupFromName(args.get(1));
 
-            getManager().users.add(new User(uuid, group));
+            User user = getManager().users.get(uuid);
+            if(user == null) {
+                getManager().users.add(new User(uuid, group));
+            } else {
+                user.setGroup(group);
+            }
             getManager().saveUsers();
             sendChat(sender, "mypermissions.notification.user.group.set");
 

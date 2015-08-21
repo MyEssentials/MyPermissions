@@ -36,6 +36,25 @@ public class Group {
         }
     }
 
+    public PermissionLevel hasPermission(String permission) {
+        PermissionLevel permLevel = permsContainer.hasPermission(permission);
+
+        if(permLevel == PermissionLevel.DENIED || permLevel == PermissionLevel.ALLOWED) {
+            return permLevel;
+        }
+
+        // If nothing was found search the inherited permissions
+
+        for(Group parent : parents) {
+            permLevel = parent.hasPermission(permission);
+            if(permLevel == PermissionLevel.DENIED || permLevel == PermissionLevel.ALLOWED) {
+                return permLevel;
+            }
+        }
+
+        return permLevel;
+    }
+
     public String getName() {
         return name;
     }

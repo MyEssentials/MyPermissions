@@ -26,7 +26,7 @@ public class UsersContainer extends ArrayList<User> {
 
         for(User user : this) {
             if(user.uuid.equals(uuid)) {
-                return user.group;
+                return user.getGroup();
             }
         }
 
