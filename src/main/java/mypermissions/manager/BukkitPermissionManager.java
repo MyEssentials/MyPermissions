@@ -13,8 +13,7 @@ public class BukkitPermissionManager implements IPermissionManager {
     @Override
     public boolean hasPermission(UUID uuid, String permission) {
         OfflinePlayer player = Bukkit.getPlayer(uuid);
-        permission = trimPermission(permission);
-        return player.getPlayer().hasPermission(permission);
+        return player.getPlayer().hasPermission(trimPermission(permission));
     }
 
     /**
