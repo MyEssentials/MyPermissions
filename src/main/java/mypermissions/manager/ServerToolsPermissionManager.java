@@ -16,7 +16,7 @@ public class ServerToolsPermissionManager implements IPermissionManager {
             serverToolsManagerAccess = MethodAccess.get(serverToolsManagerClass);
             checkPermissionMethodID = serverToolsManagerAccess.getIndex("checkPerm", String.class, UUID.class);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to find ServerTools-PERMISSION class!");
+            throw new RuntimeException("Failed to find ServerTools-PERMISSION class!", e);
         }
     }
 
