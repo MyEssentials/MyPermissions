@@ -5,7 +5,6 @@ import mypermissions.api.command.CommandManager;
 import mypermissions.command.CommandTree;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.permissions.Permission;
 
 import java.util.UUID;
 
@@ -18,6 +17,10 @@ public class BukkitPermissionManager implements IPermissionManager {
         return player.getPlayer().hasPermission(permission);
     }
 
+    /**
+     * Bukkit permissions will only check for base permission of each tree since implementing
+     * it is not important and should work as intended 99% of the time.
+     */
     public String trimPermission(String permission) {
         CommandTree tree = CommandManager.getTreeFromPermission(permission);
         if(tree != null) {
