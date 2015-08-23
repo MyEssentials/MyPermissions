@@ -7,7 +7,7 @@ import com.google.gson.stream.JsonWriter;
 import mypermissions.api.entities.Group;
 import mypermissions.api.entities.Meta;
 import mypermissions.api.entities.User;
-import mypermissions.localization.PermissionProxy;
+import mypermissions.proxies.PermissionProxy;
 import mypermissions.manager.MyPermissionsManager;
 
 import java.io.IOException;

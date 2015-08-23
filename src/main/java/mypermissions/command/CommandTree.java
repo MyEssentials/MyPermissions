@@ -3,7 +3,7 @@ package mypermissions.command;
 import myessentials.Localization;
 import myessentials.entities.Tree;
 import mypermissions.api.IPermissionManager;
-import mypermissions.localization.PermissionProxy;
+import mypermissions.proxies.PermissionProxy;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.server.CommandBlockLogic;

@@ -1,4 +1,4 @@
-package mypermissions.localization;
+package mypermissions.proxies;
 
 import cpw.mods.fml.common.Loader;
 import myessentials.utils.ClassUtils;

@@ -1,7 +1,7 @@
 package mypermissions.command;
 
 import cpw.mods.fml.common.Optional;
-import mypermissions.localization.PermissionProxy;
+import mypermissions.proxies.PermissionProxy;
 import mypermissions.manager.ForgeEssentialsPermissionManager;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
