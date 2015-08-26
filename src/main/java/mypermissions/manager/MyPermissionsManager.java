@@ -1,19 +1,13 @@
 package mypermissions.manager;
 
-import myessentials.utils.PlayerUtils;
 import mypermissions.Constants;
 import mypermissions.api.IPermissionManager;
 import mypermissions.api.container.GroupsContainer;
 import mypermissions.api.container.UsersContainer;
-import mypermissions.api.entities.Group;
 import mypermissions.api.entities.User;
 import mypermissions.config.json.GroupConfig;
 import mypermissions.config.json.UserConfig;
-import net.minecraft.entity.player.EntityPlayer;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import java.util.UUID;
 
 public class MyPermissionsManager implements IPermissionManager {

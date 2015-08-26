@@ -9,4 +9,7 @@ public class Config {
 
     @ConfigProperty(name = "localization", category = "general", comment = "The localization file used")
     public static String localization = "en_US";
+
+    @ConfigProperty(name = "fullAccessForOPS", category = "permissions", comment = "Players that are opped will have access to any command.")
+    public static boolean fullAccessForOPS = true;
 }

@@ -1,7 +1,12 @@
 package mypermissions.api.entities;
 
+import myessentials.utils.PlayerUtils;
+import mypermissions.MyPermissions;
 import mypermissions.api.container.MetaContainer;
 import mypermissions.api.container.PermissionsContainer;
+import mypermissions.config.Config;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 
 import java.util.UUID;
 
@@ -31,7 +36,8 @@ public class User {
         }
 
         permLevel = group.hasPermission(permission);
-        return permLevel == PermissionLevel.ALLOWED;
+
+        return permLevel == PermissionLevel.ALLOWED || (Config.fullAccessForOPS && PlayerUtils.isOp(uuid));
     }
 
     public Group getGroup() {
