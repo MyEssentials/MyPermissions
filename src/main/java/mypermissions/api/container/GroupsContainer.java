@@ -4,6 +4,7 @@ import myessentials.utils.ColorUtils;
 import mypermissions.api.entities.Group;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 
 public class GroupsContainer extends ArrayList<Group> {

@@ -24,6 +24,9 @@ public class MyPermissionsManager implements IPermissionManager {
     }
 
     public void loadConfigs() {
+        groups.clear();
+        users.clear();
+
         groupConfig.init();
         userConfig.init();
     }

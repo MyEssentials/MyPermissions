@@ -34,6 +34,12 @@ public class GroupConfig extends JSONConfig<Group> {
         List<Group> groups = super.read();
 
         permissionManager.groups.addAll(groups);
+        for(Group group : groups) {
+            if(group.getType() == Group.Type.DEFAULT) {
+                permissionManager.users.setDefaultGroup(group);
+                break;
+            }
+        }
 
         return groups;
     }
