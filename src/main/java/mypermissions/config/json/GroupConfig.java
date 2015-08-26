@@ -3,13 +3,9 @@ package mypermissions.config.json;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
 import myessentials.json.JSONConfig;
-import mypermissions.MyPermissions;
 import mypermissions.api.entities.Group;
 import mypermissions.manager.MyPermissionsManager;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 
-import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GroupConfig extends JSONConfig<Group> {
@@ -24,13 +20,13 @@ public class GroupConfig extends JSONConfig<Group> {
     }
 
     @Override
-    protected void create(List<Group> items) {
+    public void create(List<Group> items) {
         items.add(new Group("default", null, null, Group.Type.DEFAULT));
         super.create(items);
     }
 
     @Override
-    protected List<Group> read() {
+    public List<Group> read() {
         List<Group> groups = super.read();
 
         permissionManager.groups.addAll(groups);
@@ -45,7 +41,7 @@ public class GroupConfig extends JSONConfig<Group> {
     }
 
     @Override
-    protected boolean validate(List<Group> items) {
+    public boolean validate(List<Group> items) {
 
         if(items.size() == 0) {
             items.add(new Group("default", null, null, Group.Type.DEFAULT));

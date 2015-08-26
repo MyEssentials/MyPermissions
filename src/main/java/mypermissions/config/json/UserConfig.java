@@ -3,13 +3,9 @@ package mypermissions.config.json;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
-import myessentials.MyEssentialsCore;
 import myessentials.json.JSONConfig;
-import myessentials.utils.PlayerUtils;
-import mypermissions.api.entities.Group;
 import mypermissions.api.entities.User;
 import mypermissions.manager.MyPermissionsManager;
-import net.minecraft.entity.player.EntityPlayer;
 
 import java.util.*;
 
@@ -25,7 +21,7 @@ public class UserConfig extends JSONConfig<User> {
     }
 
     @Override
-    protected List<User> read() {
+    public List<User> read() {
         List<User> users = super.read();
         permissionsManager.users.addAll(users);
         return users;
