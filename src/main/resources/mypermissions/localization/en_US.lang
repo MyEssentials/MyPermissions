@@ -1,11 +1,38 @@
 mypermissions.cmd.err.group.notExist=&cThe group %s does not exist
+mypermissions.cmd.err.player.notExist=&cThe player %s does not exist
+
+mypermissions.notification.perm.added=&aPerm node added successfully
+mypermissions.notification.perm.removed=&aPerm node removed successfully
 
 mypermissions.notification.group.added=&aGroup has been added successfully
 mypermissions.notification.group.renamed=&aGroup has been renamed successfully
-mypermissions.notification.group.removed=&aGroup has been deleted successfully
-mypermissions.notification.group.list=&aGroups: %s
-mypermissions.notification.group.perm.added=&aPermission added successfully
-mypermissions.notification.group.perm.removed=&aPermission removed successfully
-mypermissions.notification.group.perm.list=&a Permissions for group %s: %s
+mypermissions.notification.group.deleted=&aGroup has been deleted successfully
+mypermissions.notification.group.list=&6--------[[&aGROUPS&6]]--------\n%s
+mypermissions.notification.group.perm.list=&Perm nodes for group %s: \n%s
 
-mypermissions.cmd.group.list.help=&3Lists all groups
+mypermissions.notification.user.group=&aPlayer %s is assigned to group %s
+mypermissions.notification.user.group.set=&aSuccessfully set the group of the player
+mypermissions.notification.user.perm.list=&aPerm nodes for user %s: \n%s
+mypermissions.notification.user.list=&6--------[[&aUSERS&6]]--------\n%s
+
+mypermissions.cmd.config.help=Config related commands
+mypermissions.cmd.config.reload.help=Reloads the config files
+
+mypermissions.cmd.group.help=Everything related to groups
+mypermissions.cmd.group.list.help=Lists all groups
+mypermissions.cmd.group.delete.help=Deletes a group
+mypermissions.cmd.group.rename.help=Renames a group
+mypermissions.cmd.group.add.help=Creates a new group
+mypermissions.cmd.group.perm.help=Everything related to editing perms of a group
+mypermissions.cmd.group.perm.remove.help=Removes a perm node from a group
+mypermissions.cmd.group.perm.add.help=Adds a perm node to a group
+mypermissions.cmd.group.perm.list.help=Lists all perm nodes from a group
+
+mypermissions.cmd.user.help=Everything related to players
+mypermissions.cmd.user.group.help=Everything related to a player's group
+mypermissions.cmd.user.group.show.help=Shows the group which was assigned to the player
+mypermissions.cmd.user.group.set.help=Sets a group to a player
+mypermissions.cmd.user.perm.help=Everything related to a player's perm nodes
+mypermissions.cmd.user.perm.list.help=Lists all perm nodes a player has
+mypermissions.cmd.user.perm.remove.help=Removes a perm node from a player
+mypermissions.cmd.user.perm.add.help=Adds a perm node to a player

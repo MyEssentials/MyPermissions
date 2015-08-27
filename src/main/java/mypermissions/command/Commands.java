@@ -72,6 +72,7 @@ public class Commands {
         }
         return CommandResponse.DONE;
     }
+
     public static class MyPermissionManagerCommands {
         @Command(
                 name = "group",
@@ -100,11 +101,11 @@ public class Commands {
         }
 
         @Command(
-                name = "remove",
-                permission = "mypermissions.cmd.group.remove",
+                name = "delete",
+                permission = "mypermissions.cmd.group.delete",
                 parentName = "mypermissions.cmd.group",
-                syntax = "/perm group remove <name>")
-        public static CommandResponse groupRemoveCommand(ICommandSender sender, List<String> args) {
+                syntax = "/perm group delete <name>")
+        public static CommandResponse groupDeleteCommand(ICommandSender sender, List<String> args) {
             if (args.size() < 1) {
                 return CommandResponse.SEND_SYNTAX;
             }
@@ -112,7 +113,7 @@ public class Commands {
             Group group = getGroupFromName(args.get(0));
             getManager().groups.remove(group);
             getManager().saveGroups();
-            sendChat(sender, "mypermissions.notification.group.removed");
+            sendChat(sender, "mypermissions.notification.group.deleted");
             return CommandResponse.DONE;
         }
 
@@ -165,7 +166,7 @@ public class Commands {
             Group group = getGroupFromName(args.get(0));
             group.permsContainer.add(args.get(1));
             getManager().saveGroups();
-            sendChat(sender, "mypermissions.notification.group.perm.added");
+            sendChat(sender, "mypermissions.notification.perm.added");
 
             return CommandResponse.DONE;
         }
@@ -183,7 +184,7 @@ public class Commands {
             Group group = getGroupFromName(args.get(0));
             group.permsContainer.remove(args.get(1));
             getManager().saveGroups();
-            sendChat(sender, "mypermissions.notification.group.perm.removed");
+            sendChat(sender, "mypermissions.notification.perm.removed");
 
             return CommandResponse.DONE;
         }
@@ -216,8 +217,35 @@ public class Commands {
                 name = "group",
                 permission = "mypermissions.cmd.user.group",
                 parentName = "mypermissions.cmd.user",
-                syntax = "/perm user group <player> <group>")
+                syntax = "/perm user group <command>")
         public static CommandResponse userGroupCommand(ICommandSender sender, List<String> args) {
+            return CommandResponse.SEND_HELP_MESSAGE;
+        }
+
+        @Command(
+                name = "show",
+                permission = "mypermissions.cmd.user.group.show",
+                parentName = "mypermissions.cmd.user.group",
+                syntax = "/perm user group show <player>")
+        public static CommandResponse userGroupShowCommand(ICommandSender sender, List<String> args) {
+            if(args.size() < 1) {
+                return CommandResponse.SEND_SYNTAX;
+            }
+
+            UUID uuid = getUUIDFromUsername(args.get(0));
+            Group group = getManager().users.get(uuid).getGroup();
+
+            sendChat(sender, "mypermissions.notification.user.group",  args.get(0), group.getName());
+
+            return CommandResponse.DONE;
+        }
+
+        @Command(
+                name = "set",
+                permission = "mypermissions.cmd.user.group.set",
+                parentName = "mypermissions.cmd.user.group",
+                syntax = "/perm user group set <player> <group>")
+        public static CommandResponse userGroupSetCommand(ICommandSender sender, List<String> args) {
             if(args.size() < 2) {
                 return CommandResponse.SEND_SYNTAX;
             }
@@ -238,6 +266,17 @@ public class Commands {
         }
 
         @Command(
+                name = "list",
+                permission = "mypermissions.cmd.user.list",
+                parentName = "mypermissions.cmd.user",
+                syntax = "/perm user list")
+        public static CommandResponse userListCommand(ICommandSender sender, List<String> args) {
+            sendChat(sender, "mypermissions.notification.user.list", getManager().users.toString());
+
+            return CommandResponse.DONE;
+        }
+
+            @Command(
                 name = "perm",
                 permission = "mypermissions.cmd.user.perm",
                 parentName = "mypermissions.cmd.user",
@@ -260,7 +299,7 @@ public class Commands {
             User user = getManager().users.get(uuid);
             user.permsContainer.add(args.get(1));
             getManager().saveUsers();
-            sendChat(sender, "mypermissions.notification.user.perm.added");
+            sendChat(sender, "mypermissions.notification.perm.added");
 
             return CommandResponse.DONE;
         }
@@ -279,7 +318,7 @@ public class Commands {
             User user = getManager().users.get(uuid);
             user.permsContainer.remove(args.get(1));
             getManager().saveUsers();
-            sendChat(sender, "mypermissions.notification.user.perm.removed");
+            sendChat(sender, "mypermissions.notification.perm.removed");
 
             return CommandResponse.DONE;
         }
@@ -296,8 +335,9 @@ public class Commands {
 
             UUID uuid = getUUIDFromUsername(args.get(0));
             User user = getManager().users.get(uuid);
+
             getManager().saveUsers();
-            sendChat(sender, "mypermissions.notification.user.perm.list", user.permsContainer.toString());
+            sendChat(sender, "mypermissions.notification.user.perm.list", args.get(0), user.permsContainer.toString());
 
             return CommandResponse.DONE;
         }

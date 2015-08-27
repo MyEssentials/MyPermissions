@@ -1,5 +1,7 @@
 package mypermissions.api.container;
 
+import myessentials.utils.ColorUtils;
+import myessentials.utils.PlayerUtils;
 import mypermissions.api.entities.Group;
 import mypermissions.api.entities.User;
 
@@ -50,5 +52,21 @@ public class UsersContainer extends ArrayList<User> {
 
     public void setDefaultGroup(Group defaultGroup) {
         this.defaultGroup = defaultGroup;
+    }
+
+    @Override
+    public String toString() {
+        String formattedList = "";
+
+        for(User user : this) {
+            String toAdd = String.format(ColorUtils.colorPlayer + "%s" + ColorUtils.colorComma + " {" + ColorUtils.colorGroupText + " Group: " + ColorUtils.colorGroup + "%s " + ColorUtils.colorComma + "}", PlayerUtils.getUsernameFromUUID(user.uuid), user.getGroup().getName());
+            if(formattedList.equals("")) {
+                formattedList += toAdd;
+            } else {
+                formattedList += "\\n" + toAdd;
+            }
+        }
+
+        return formattedList;
     }
 }
