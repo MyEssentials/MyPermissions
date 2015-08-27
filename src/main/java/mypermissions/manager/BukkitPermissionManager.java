@@ -1,5 +1,6 @@
 package mypermissions.manager;
 
+import mypermissions.MyPermissions;
 import mypermissions.api.IPermissionManager;
 import mypermissions.api.command.CommandManager;
 import mypermissions.command.CommandTree;
@@ -13,6 +14,11 @@ public class BukkitPermissionManager implements IPermissionManager {
     @Override
     public boolean hasPermission(UUID uuid, String permission) {
         OfflinePlayer player = Bukkit.getPlayer(uuid);
+        if(player == null || player.getPlayer() == null) {
+            MyPermissions.instance.LOG.error("Failed to get player with the UUID: " + uuid.toString());
+            return false;
+        }
+
         return player.getPlayer().hasPermission(trimPermission(permission));
     }
 
