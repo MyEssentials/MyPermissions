@@ -12,16 +12,22 @@ public class UsersContainer extends ArrayList<User> {
 
     private Group defaultGroup;
 
+    public boolean add(UUID uuid) {
+        if(get(uuid) == null) {
+            User newUser = new User(uuid, defaultGroup);
+            add(newUser);
+            return true;
+        }
+        return false;
+    }
+
     public User get(UUID uuid) {
         for(User user : this) {
             if(user.uuid.equals(uuid)) {
                 return user;
             }
         }
-
-        User newUser = new User(uuid, defaultGroup);
-        add(newUser);
-        return newUser;
+        return null;
     }
 
     public Group getPlayerGroup(UUID uuid) {

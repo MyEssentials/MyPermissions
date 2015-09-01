@@ -64,7 +64,7 @@ public class Commands {
     public static CommandResponse configReloadCommand(ICommandSender sender, List<String> args) {
         MyPermissions.instance.loadConfig();
         ChatUtils.sendChat(sender, "Successfully reloaded mod configs!");
-        if(PermissionProxy.getPermissionManager() instanceof MyPermissions) {
+        if(PermissionProxy.getPermissionManager() instanceof MyPermissionsManager) {
             ((MyPermissionsManager) PermissionProxy.getPermissionManager()).loadConfigs();
             ChatUtils.sendChat(sender, "Successfully reloaded permission configs!");
         } else {

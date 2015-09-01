@@ -1,11 +1,13 @@
 package mypermissions;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.*;
 import mypermissions.api.command.CommandManager;
 import myessentials.config.ConfigProcessor;
 import mypermissions.command.Commands;
 import mypermissions.config.Config;
+import mypermissions.handlers.Ticker;
 import mypermissions.proxies.LocalizationProxy;
 import mypermissions.proxies.PermissionProxy;
 import mypermissions.manager.MyPermissionsManager;
@@ -26,6 +28,7 @@ public class MyPermissions {
     public void preInit(FMLPreInitializationEvent ev) {
         LOG = ev.getModLog();
         Constants.CONFIG_FOLDER = ev.getModConfigurationDirectory().getPath() + "/MyPermissions/";
+        FMLCommonHandler.instance().bus().register(Ticker.instance);
     }
 
     public void loadConfig() {
