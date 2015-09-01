@@ -11,6 +11,7 @@ import mypermissions.handlers.Ticker;
 import mypermissions.proxies.LocalizationProxy;
 import mypermissions.proxies.PermissionProxy;
 import mypermissions.manager.MyPermissionsManager;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import org.apache.logging.log4j.Logger;
 
@@ -29,6 +30,7 @@ public class MyPermissions {
         LOG = ev.getModLog();
         Constants.CONFIG_FOLDER = ev.getModConfigurationDirectory().getPath() + "/MyPermissions/";
         FMLCommonHandler.instance().bus().register(Ticker.instance);
+        MinecraftForge.EVENT_BUS.register(Ticker.instance);
     }
 
     public void loadConfig() {

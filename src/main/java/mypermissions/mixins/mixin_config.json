@@ -1,0 +1,7 @@
+{
+  "package": "mypermissions.mixins",
+  "plugin": "mypermissions.mixins.MyPermissionsMixinConfig",
+  "mixins": [
+    "MixinCommandHandler"
+  ]
+}
