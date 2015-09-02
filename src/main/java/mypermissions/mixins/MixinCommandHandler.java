@@ -11,13 +11,13 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.*;
 
-@Mixin({CommandHandler.class})
+//@Mixin({CommandHandler.class})
 public abstract class MixinCommandHandler {
 
-    @Shadow
+    //@Shadow
     private final Map<String, ICommand> commandMap = new HashMap<String, ICommand>();
 
-    @Shadow
+    //@Shadow
     private final Set<ICommand> commandSet = new HashSet<ICommand>();
 
     /*
@@ -52,6 +52,7 @@ public abstract class MixinCommandHandler {
         }
     }
     */
+    /*
 
     @Overwrite
     public List<ICommand> getPossibleCommands(ICommandSender sender)
@@ -69,6 +70,7 @@ public abstract class MixinCommandHandler {
 
         return commands;
     }
+    */
 
 }
 
