@@ -3,12 +3,12 @@ package mypermissions;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.*;
+import myessentials.Localization;
 import mypermissions.api.command.CommandManager;
 import myessentials.config.ConfigProcessor;
 import mypermissions.command.Commands;
 import mypermissions.config.Config;
 import mypermissions.handlers.Ticker;
-import mypermissions.proxies.LocalizationProxy;
 import mypermissions.proxies.PermissionProxy;
 import mypermissions.manager.MyPermissionsManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -21,6 +21,7 @@ import java.io.File;
 public class MyPermissions {
     public Configuration config;
     public Logger LOG;
+    public Localization LOCAL;
 
     @Mod.Instance(Constants.MODID)
     public static MyPermissions instance;
@@ -29,6 +30,8 @@ public class MyPermissions {
     public void preInit(FMLPreInitializationEvent ev) {
         LOG = ev.getModLog();
         Constants.CONFIG_FOLDER = ev.getModConfigurationDirectory().getPath() + "/MyPermissions/";
+        LOCAL = new Localization(Constants.CONFIG_FOLDER, Config.localization, "/mypermissions/localization/", MyPermissions.class);
+        LOG.info(LOCAL.getLocalization("mypermissions.notification.user.group.set"));
         FMLCommonHandler.instance().bus().register(Ticker.instance);
         MinecraftForge.EVENT_BUS.register(Ticker.instance);
     }
@@ -50,9 +53,9 @@ public class MyPermissions {
     @Mod.EventHandler
     public void serverStarting(FMLServerStartingEvent ev) {
         loadConfig();
-        CommandManager.registerCommands(Commands.class, null, LocalizationProxy.getLocalization(), null);
+        CommandManager.registerCommands(Commands.class, null, MyPermissions.instance.LOCAL, null);
         if(PermissionProxy.getPermissionManager() instanceof MyPermissionsManager) {
-            CommandManager.registerCommands(Commands.MyPermissionManagerCommands.class, "mypermissions.cmd", LocalizationProxy.getLocalization(), null);
+            CommandManager.registerCommands(Commands.MyPermissionManagerCommands.class, "mypermissions.cmd", MyPermissions.instance.LOCAL, null);
         }
     }
 

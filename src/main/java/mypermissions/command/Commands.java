@@ -8,7 +8,6 @@ import mypermissions.MyPermissions;
 import mypermissions.api.entities.Group;
 import mypermissions.api.entities.User;
 import mypermissions.exception.PermissionCommandException;
-import mypermissions.proxies.LocalizationProxy;
 import mypermissions.proxies.PermissionProxy;
 import mypermissions.manager.MyPermissionsManager;
 import net.minecraft.command.ICommandSender;
@@ -35,7 +34,7 @@ public class Commands {
     }
 
     protected static void sendChat(ICommandSender sender, String localKey, Object... args) {
-        ChatUtils.sendChat(sender, LocalizationProxy.getLocalization().getLocalization(localKey, args));
+        ChatUtils.sendChat(sender, MyPermissions.instance.LOCAL.getLocalization(localKey, args));
     }
 
     @Command(

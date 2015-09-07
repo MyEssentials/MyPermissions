@@ -1,10 +1,10 @@
 package mypermissions.exception;
 
-import mypermissions.proxies.LocalizationProxy;
+import mypermissions.MyPermissions;
 import net.minecraft.command.CommandException;
 
 public class PermissionCommandException extends CommandException {
     public PermissionCommandException(String localKey, Object... args) {
-        super(LocalizationProxy.getLocalization().getLocalization(localKey, args));
+        super(MyPermissions.instance.LOCAL.getLocalization(localKey, args));
     }
 }
