@@ -29,8 +29,8 @@ public class MyPermissions {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent ev) {
         LOG = ev.getModLog();
-        Constants.CONFIG_FOLDER = ev.getModConfigurationDirectory().getPath() + "/MyPermissions/";
-        LOCAL = new Localization(Constants.CONFIG_FOLDER, Config.localization, "/mypermissions/localization/", MyPermissions.class);
+        Constants.CONFIG_FOLDER = ev.getModConfigurationDirectory().getPath() + "/myessentials/";
+        LOCAL = new Localization(Constants.CONFIG_FOLDER, Config.localization, "/myessentials/localization/", MyPermissions.class);
         LOG.info(LOCAL.getLocalization("mypermissions.notification.user.group.set"));
         FMLCommonHandler.instance().bus().register(Ticker.instance);
         MinecraftForge.EVENT_BUS.register(Ticker.instance);
