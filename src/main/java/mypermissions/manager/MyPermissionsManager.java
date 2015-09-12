@@ -53,6 +53,6 @@ public class MyPermissionsManager implements IPermissionManager {
             saveUsers();
         }
 
-        return user.hasPermission(permission);
+        return user != null && user.hasPermission(permission);
     }
 }
