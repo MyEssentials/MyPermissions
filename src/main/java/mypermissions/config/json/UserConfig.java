@@ -3,13 +3,14 @@ package mypermissions.config.json;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
-import myessentials.json.JSONConfig;
+import myessentials.json.JsonConfig;
+import mypermissions.api.container.UsersContainer;
 import mypermissions.api.entities.User;
 import mypermissions.manager.MyPermissionsManager;
 
 import java.util.*;
 
-public class UserConfig extends JSONConfig<User> {
+public class UserConfig extends JsonConfig<User, UsersContainer> {
 
     private MyPermissionsManager permissionsManager;
 
@@ -21,8 +22,13 @@ public class UserConfig extends JSONConfig<User> {
     }
 
     @Override
-    public List<User> read() {
-        List<User> users = super.read();
+    protected UsersContainer newList() {
+        return new UsersContainer();
+    }
+
+    @Override
+    public UsersContainer read() {
+        UsersContainer users = super.read();
         permissionsManager.users.addAll(users);
         return users;
     }

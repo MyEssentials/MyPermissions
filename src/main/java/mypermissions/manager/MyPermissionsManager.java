@@ -27,8 +27,8 @@ public class MyPermissionsManager implements IPermissionManager {
         groups.clear();
         users.clear();
 
-        groupConfig.init();
-        userConfig.init();
+        groupConfig.init(new GroupsContainer());
+        userConfig.init(new UsersContainer());
     }
 
     public void saveConfigs() {
