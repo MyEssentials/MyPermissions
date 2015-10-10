@@ -1,15 +1,24 @@
 package mypermissions.config;
 
 import myessentials.config.ConfigProperty;
+import myessentials.config.ConfigTemplate;
 
-public class Config {
+public class Config extends ConfigTemplate {
 
-    @ConfigProperty(name = "permissionSystem", category = "general", comment = "The permission system it should be used as default. $ForgeEssentials for FE permission system, $Bukkit for Bukkit permission system, $ServerTools for ServerTools-PERMISION's permisison system and $MyPermissions for our own permission system.")
-    public static String permissionSystem = "$MyPermissions";
+    public static final Config instance = new Config();
 
-    @ConfigProperty(name = "localization", category = "general", comment = "The localization file used")
-    public static String localization = "en_US";
+    public ConfigProperty<String> permissionSystem = new ConfigProperty<String>(
+            "permissionSystem", "general",
+            "The permission system it should be used as default. $ForgeEssentials for FE permission system, $Bukkit for Bukkit permission system, $ServerTools for ServerTools-PERMISION's permisison system and $MyPermissions for our own permission system.",
+            "$MyPermissions");
 
-    @ConfigProperty(name = "fullAccessForOPS", category = "permissions", comment = "Players that are opped will have access to any command.")
-    public static boolean fullAccessForOPS = true;
+    public ConfigProperty<String> localization = new ConfigProperty<String>(
+            "localization", "general",
+            "The localization used",
+            "en_US");
+
+    public ConfigProperty<Boolean> fullAccessForOPS = new ConfigProperty<Boolean>(
+            "fullAccessForOPS", "permissions",
+            "Players that are opped will have access to any command.",
+            true);
 }

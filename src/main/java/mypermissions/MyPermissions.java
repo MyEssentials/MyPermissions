@@ -5,21 +5,16 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.*;
 import myessentials.Localization;
 import mypermissions.api.command.CommandManager;
-import myessentials.config.ConfigProcessor;
 import mypermissions.command.Commands;
 import mypermissions.config.Config;
 import mypermissions.handlers.Ticker;
-import mypermissions.proxies.PermissionProxy;
 import mypermissions.manager.MyPermissionsManager;
+import mypermissions.proxies.PermissionProxy;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
 import org.apache.logging.log4j.Logger;
-
-import java.io.File;
 
 @Mod(modid = Constants.MODID, name = Constants.MODNAME, version = Constants.VERSION, dependencies = Constants.DEPENDENCIES, acceptableRemoteVersions = "*")
 public class MyPermissions {
-    public Configuration config;
     public Logger LOG;
     public Localization LOCAL;
 
@@ -29,16 +24,16 @@ public class MyPermissions {
     @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent ev) {
         LOG = ev.getModLog();
+        Config.instance.init(Constants.CONFIG_FOLDER, "MyPermissions.cfg");
         Constants.CONFIG_FOLDER = ev.getModConfigurationDirectory().getPath() + "/MyPermissions/";
-        LOCAL = new Localization(Constants.CONFIG_FOLDER, Config.localization, "/mypermissions/localization/", MyPermissions.class);
+        LOCAL = new Localization(Constants.CONFIG_FOLDER, Config.instance.localization.get(), "/mypermissions/localization/", MyPermissions.class);
         LOG.info(LOCAL.getLocalization("mypermissions.notification.user.group.set"));
         FMLCommonHandler.instance().bus().register(Ticker.instance);
         MinecraftForge.EVENT_BUS.register(Ticker.instance);
     }
 
     public void loadConfig() {
-        config = new Configuration(new File(Constants.CONFIG_FOLDER, "MyPermissions.cfg"));
-        ConfigProcessor.load(config, Config.class);
+        Config.instance.reload();
         PermissionProxy.init();
     }
 
