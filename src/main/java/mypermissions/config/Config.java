@@ -21,4 +21,9 @@ public class Config extends ConfigTemplate {
             "fullAccessForOPS", "permissions",
             "Players that are opped will have access to any command.",
             true);
+
+    public ConfigProperty<String> defaultGroup = new ConfigProperty<String>(
+            "defaultGroup", "groups",
+            "The default group assigned to any player that does not have one assigned yet.",
+            "default");
 }

@@ -1,9 +1,13 @@
 package mypermissions.api.entities;
 
+import com.google.common.collect.ImmutableList;
+import com.google.gson.*;
 import mypermissions.api.container.GroupsContainer;
 import mypermissions.api.container.MetaContainer;
 import mypermissions.api.container.PermissionsContainer;
+import scala.actors.threadpool.Arrays;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,39 +19,27 @@ import java.util.List;
 public class Group {
 
     private String name;
-    private Type type;
 
     public final PermissionsContainer permsContainer = new PermissionsContainer();
     public final MetaContainer metaContainer = new MetaContainer();
     public final GroupsContainer parents = new GroupsContainer();
 
-    public Group(String name, List<String> permissions, List<Group> parents, Type type) {
+    public Group(String name) {
         this.name = name;
-        if(permissions != null) {
-            this.permsContainer.addAll(permissions);
-        }
-        if(parents != null) {
-            this.parents.addAll(parents);
-        }
-        if(type == null) {
-            this.type = Type.NORMAL;
-        } else {
-            this.type = type;
-        }
     }
 
     public PermissionLevel hasPermission(String permission) {
         PermissionLevel permLevel = permsContainer.hasPermission(permission);
 
-        if(permLevel == PermissionLevel.DENIED || permLevel == PermissionLevel.ALLOWED) {
+        if (permLevel == PermissionLevel.DENIED || permLevel == PermissionLevel.ALLOWED) {
             return permLevel;
         }
 
         // If nothing was found search the inherited permissions
 
-        for(Group parent : parents) {
+        for (Group parent : parents) {
             permLevel = parent.hasPermission(permission);
-            if(permLevel == PermissionLevel.DENIED || permLevel == PermissionLevel.ALLOWED) {
+            if (permLevel == PermissionLevel.DENIED || permLevel == PermissionLevel.ALLOWED) {
                 return permLevel;
             }
         }
@@ -63,16 +55,29 @@ public class Group {
         this.name = name;
     }
 
-    public Type getType() {
-        return type;
-    }
+    public static class Serializer implements JsonSerializer<Group>, JsonDeserializer<Group> {
 
-    public void setType(Type type) {
-        this.type = type;
-    }
+        @Override
+        public Group deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            JsonObject jsonObject = json.getAsJsonObject();
+            String name = jsonObject.get("name").getAsString();
+            Group group = new Group(name);
+            if (jsonObject.has("permissions")) {
+                group.permsContainer.addAll(ImmutableList.copyOf(context.<String[]>deserialize(jsonObject.get("permissions"), String[].class)));
+            }
+            if (jsonObject.has("meta")) {
+                group.metaContainer.addAll(context.<MetaContainer>deserialize(jsonObject.get("meta"), MetaContainer.class));
+            }
+            return group;
+        }
 
-    public enum Type {
-        DEFAULT,
-        NORMAL
+        @Override
+        public JsonElement serialize(Group group, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject json = new JsonObject();
+            json.addProperty("name", group.getName());
+            json.add("permissions", context.serialize(group.permsContainer));
+            json.add("meta", context.serialize(group.metaContainer));
+            return json;
+        }
     }
 }

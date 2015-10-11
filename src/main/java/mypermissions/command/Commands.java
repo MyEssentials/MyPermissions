@@ -92,7 +92,7 @@ public class Commands {
                 return CommandResponse.SEND_SYNTAX;
             }
 
-            Group group = new Group(args.get(0), null, null, null);
+            Group group = new Group(args.get(0));
             getManager().groups.add(group);
             getManager().saveGroups();
             sendChat(sender, "mypermissions.notification.group.added");
@@ -232,7 +232,7 @@ public class Commands {
             }
 
             UUID uuid = getUUIDFromUsername(args.get(0));
-            Group group = getManager().users.get(uuid).getGroup();
+            Group group = getManager().users.get(uuid).group;
 
             sendChat(sender, "mypermissions.notification.user.group",  args.get(0), group.getName());
 
@@ -256,7 +256,7 @@ public class Commands {
             if(user == null) {
                 getManager().users.add(new User(uuid, group));
             } else {
-                user.setGroup(group);
+                user.group = group;
             }
             getManager().saveUsers();
             sendChat(sender, "mypermissions.notification.user.group.set");

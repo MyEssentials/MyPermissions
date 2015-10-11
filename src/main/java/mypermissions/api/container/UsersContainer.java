@@ -34,7 +34,7 @@ public class UsersContainer extends ArrayList<User> {
 
         for(User user : this) {
             if(user.uuid.equals(uuid)) {
-                return user.getGroup();
+                return user.group;
             }
         }
 
@@ -65,7 +65,7 @@ public class UsersContainer extends ArrayList<User> {
         String formattedList = "";
 
         for(User user : this) {
-            String toAdd = String.format(ColorUtils.colorPlayer + "%s" + ColorUtils.colorComma + " {" + ColorUtils.colorGroupText + " Group: " + ColorUtils.colorGroup + "%s " + ColorUtils.colorComma + "}", PlayerUtils.getUsernameFromUUID(user.uuid), user.getGroup().getName());
+            String toAdd = String.format(ColorUtils.colorPlayer + "%s" + ColorUtils.colorComma + " {" + ColorUtils.colorGroupText + ColorUtils.colorComma + "}", PlayerUtils.getUsernameFromUUID(user.uuid));
             if(formattedList.equals("")) {
                 formattedList += toAdd;
             } else {

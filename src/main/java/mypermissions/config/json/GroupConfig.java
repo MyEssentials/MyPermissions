@@ -4,7 +4,9 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
 import myessentials.json.JsonConfig;
 import mypermissions.api.container.GroupsContainer;
+import mypermissions.api.container.MetaContainer;
 import mypermissions.api.entities.Group;
+import mypermissions.config.Config;
 import mypermissions.manager.MyPermissionsManager;
 
 import java.util.List;
@@ -17,7 +19,10 @@ public class GroupConfig extends JsonConfig<Group, GroupsContainer> {
         super(path, "GroupConfig");
         this.permissionManager = permissionManager;
         this.gsonType = new TypeToken<GroupsContainer>() {}.getType();
-        this.gson = new GsonBuilder().registerTypeAdapter(gsonType, new GroupTypeAdapter()).setPrettyPrinting().create();
+        this.gson = new GsonBuilder()
+                .registerTypeAdapter(Group.class, new Group.Serializer())
+                .registerTypeAdapter(MetaContainer.class, new MetaContainer.Serializer())
+                .setPrettyPrinting().create();
     }
 
     @Override
@@ -27,7 +32,7 @@ public class GroupConfig extends JsonConfig<Group, GroupsContainer> {
 
     @Override
     public void create(GroupsContainer items) {
-        items.add(new Group("default", null, null, Group.Type.DEFAULT));
+        items.add(new Group("default"));
         super.create(items);
     }
 
@@ -36,53 +41,17 @@ public class GroupConfig extends JsonConfig<Group, GroupsContainer> {
         GroupsContainer groups = super.read();
 
         permissionManager.groups.addAll(groups);
-        for (Group group : groups) {
-            if (group.getType() == Group.Type.DEFAULT) {
-                permissionManager.users.setDefaultGroup(group);
-                break;
-            }
-        }
 
         return groups;
     }
 
     @Override
     public boolean validate(GroupsContainer items) {
-
         if (items.size() == 0) {
-            items.add(new Group("default", null, null, Group.Type.DEFAULT));
+            items.add(new Group(Config.instance.defaultGroup.get()));
             return false;
         }
 
-        boolean valid = true;
-        boolean defaultGroup = false;
-
-        for (Group group : items) {
-            if (group.getType() == Group.Type.DEFAULT) {
-                if (defaultGroup) {
-                    group.setType(Group.Type.NORMAL);
-                    valid = false;
-                } else {
-                    defaultGroup = true;
-                }
-            }
-        }
-
-        if (!defaultGroup) {
-            for (Group group : items) {
-                if (group.getName().equals("default")) {
-                    group.setType(Group.Type.DEFAULT);
-                    defaultGroup = true;
-                    valid = false;
-                }
-            }
-        }
-
-        if (!defaultGroup) {
-            items.add(new Group("default", null, null, Group.Type.DEFAULT));
-            valid = false;
-        }
-
-        return valid;
+        return true;
     }
 }

@@ -1,7 +1,6 @@
 package mypermissions.api.container;
 
 
-import mypermissions.MyPermissions;
 import mypermissions.api.entities.PermissionLevel;
 
 import java.util.ArrayList;

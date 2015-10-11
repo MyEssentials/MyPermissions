@@ -27,19 +27,19 @@ public class PermissionProxy {
     }
 
     public static void init() {
-        if(Config.permissionSystem.equals(PERM_SYSTEM_BUKKIT)) {
+        if(Config.instance.permissionSystem.get().equals(PERM_SYSTEM_BUKKIT)) {
             if(!ClassUtils.isBukkitLoaded()) {
                 throw new PermissionException("Failed to find Bukkit permission system.");
             }
             permissionManager = new BukkitPermissionManager();
             MyPermissions.instance.LOG.info("Successfully linked to Bukkit's permission system");
-        } else if(Config.permissionSystem.equals(PERM_SYSTEM_FORGE_ESSENTIALS)) {
+        } else if(Config.instance.permissionSystem.get().equals(PERM_SYSTEM_FORGE_ESSENTIALS)) {
             if (!Loader.isModLoaded("ForgeEssentials")) {
                 throw new PermissionException("Failed to find ForgeEssentials permission system.");
             }
             permissionManager = new ForgeEssentialsPermissionManager();
             MyPermissions.instance.LOG.info("Successfully linked to ForgeEssentials' permission system");
-        } else if(Config.permissionSystem.equals(PERM_SYSTEM_SERVER_TOOLS)) {
+        } else if(Config.instance.permissionSystem.get().equals(PERM_SYSTEM_SERVER_TOOLS)) {
             if(!Loader.isModLoaded("ServerTools-PERMISSION")) {
                 throw new PermissionException("Failed to find ServerTools' permission system.");
             }
