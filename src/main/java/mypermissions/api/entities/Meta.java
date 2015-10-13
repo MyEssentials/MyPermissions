@@ -1,6 +1,7 @@
 package mypermissions.api.entities;
 
 import com.google.gson.*;
+import myessentials.json.SerializerTemplate;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -33,7 +34,13 @@ public class Meta {
         /**
          * Since Meta is represented by a "key":value format in Json it needs to stay in the Container rather than in the Meta class
          */
-        public static class Serializer implements JsonSerializer<Container>, JsonDeserializer<Container> {
+        public static class Serializer extends SerializerTemplate<Container> {
+
+            @Override
+            public void register(GsonBuilder builder) {
+                builder.registerTypeAdapter(Container.class, this);
+            }
+
             @Override
             public Container deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
                 JsonObject jsonObject = json.getAsJsonObject();

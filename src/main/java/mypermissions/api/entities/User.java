@@ -2,6 +2,7 @@ package mypermissions.api.entities;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
+import myessentials.json.SerializerTemplate;
 import myessentials.utils.ColorUtils;
 import myessentials.utils.PlayerUtils;
 import mypermissions.api.container.PermissionsContainer;
@@ -47,7 +48,13 @@ public class User {
         return permLevel == PermissionLevel.ALLOWED || (Config.instance.fullAccessForOPS.get() && PlayerUtils.isOp(uuid));
     }
 
-    public static class Serializer implements JsonSerializer<User>, JsonDeserializer<User> {
+    public static class Serializer extends SerializerTemplate<User> {
+
+        @Override
+        public void register(GsonBuilder builder) {
+            builder.registerTypeAdapter(User.class, this);
+            new Meta.Container.Serializer().register(builder);
+        }
 
         @Override
         public User deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

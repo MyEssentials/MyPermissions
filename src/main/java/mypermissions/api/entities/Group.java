@@ -2,6 +2,7 @@ package mypermissions.api.entities;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
+import myessentials.json.SerializerTemplate;
 import myessentials.utils.ColorUtils;
 import mypermissions.api.container.PermissionsContainer;
 
@@ -53,7 +54,13 @@ public class Group {
         this.name = name;
     }
 
-    public static class Serializer implements JsonSerializer<Group>, JsonDeserializer<Group> {
+    public static class Serializer extends SerializerTemplate<Group> {
+
+        @Override
+        public void register(GsonBuilder builder) {
+            builder.registerTypeAdapter(Group.class, this);
+            new Meta.Container.Serializer().register(builder);
+        }
 
         @Override
         public Group deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
