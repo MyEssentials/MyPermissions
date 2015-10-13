@@ -2,14 +2,12 @@ package mypermissions.api.entities;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
-import mypermissions.api.container.GroupsContainer;
-import mypermissions.api.container.MetaContainer;
+import myessentials.utils.ColorUtils;
 import mypermissions.api.container.PermissionsContainer;
-import scala.actors.threadpool.Arrays;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Iterator;
 
 /**
  * A set of permissions that is assigned to players.
@@ -21,8 +19,8 @@ public class Group {
     private String name;
 
     public final PermissionsContainer permsContainer = new PermissionsContainer();
-    public final MetaContainer metaContainer = new MetaContainer();
-    public final GroupsContainer parents = new GroupsContainer();
+    public final Meta.Container metaContainer = new Meta.Container();
+    public final Container parents = new Container();
 
     public Group(String name) {
         this.name = name;
@@ -66,7 +64,7 @@ public class Group {
                 group.permsContainer.addAll(ImmutableList.copyOf(context.<String[]>deserialize(jsonObject.get("permissions"), String[].class)));
             }
             if (jsonObject.has("meta")) {
-                group.metaContainer.addAll(context.<MetaContainer>deserialize(jsonObject.get("meta"), MetaContainer.class));
+                group.metaContainer.addAll(context.<Meta.Container>deserialize(jsonObject.get("meta"), Meta.Container.class));
             }
             return group;
         }
@@ -78,6 +76,58 @@ public class Group {
             json.add("permissions", context.serialize(group.permsContainer));
             json.add("meta", context.serialize(group.metaContainer));
             return json;
+        }
+    }
+
+    public static class Container extends ArrayList<Group> {
+
+        public void remove(String groupName) {
+            for (Iterator<Group> it = iterator(); it.hasNext();) {
+                Group group = it.next();
+                if (group.getName().equals(groupName)) {
+                    it.remove();
+                    return;
+                }
+            }
+        }
+
+        public boolean contains(String groupName) {
+            for (Group group : this) {
+                if (group.getName().equals(groupName))
+                    return true;
+            }
+            return false;
+        }
+
+        public Group get(String groupName) {
+            for (Group group : this) {
+                if (group.getName().equals(groupName))
+                    return group;
+            }
+            return null;
+        }
+
+        @Override
+        public String toString() {
+            String formattedList = "";
+            for (Group group : this) {
+                String parents = "";
+                for (Group parent : group.parents) {
+                    if (parents.equals("")) {
+                        parents += parent.getName();
+                    } else {
+                        parents += ", " +  parent.getName();
+                    }
+                }
+
+                String formattedGroup = group.getName() + ColorUtils.colorComma + " ( " + ColorUtils.colorGroupText + (group.parents.isEmpty() ? "" : ColorUtils.colorComma + " | " + ColorUtils.colorGroupText + "P: " + ColorUtils.colorGroupParents + parents) + ColorUtils.colorComma + " )";
+                if (formattedList.equals("")) {
+                    formattedList += formattedGroup;
+                } else {
+                    formattedList += "\\n" + formattedGroup;
+                }
+            }
+            return formattedList;
         }
     }
 }

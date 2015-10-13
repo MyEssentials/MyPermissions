@@ -2,17 +2,15 @@ package mypermissions.api.entities;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
+import myessentials.utils.ColorUtils;
 import myessentials.utils.PlayerUtils;
-import mypermissions.MyPermissions;
-import mypermissions.api.container.MetaContainer;
 import mypermissions.api.container.PermissionsContainer;
 import mypermissions.config.Config;
 import mypermissions.manager.MyPermissionsManager;
 import mypermissions.proxies.PermissionProxy;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -24,7 +22,7 @@ public class User {
 
     public final UUID uuid;
     public final PermissionsContainer permsContainer = new PermissionsContainer();
-    public final MetaContainer metaContainer = new MetaContainer();
+    public final Meta.Container metaContainer = new Meta.Container();
 
     public User(UUID uuid) {
         this.uuid = uuid;
@@ -62,7 +60,7 @@ public class User {
                 user.permsContainer.addAll(ImmutableList.copyOf(context.<String[]>deserialize(jsonObject.get("permissions"), String[].class)));
             }
             if (jsonObject.has("meta")) {
-                user.metaContainer.addAll(context.<MetaContainer>deserialize(jsonObject.get("meta"), MetaContainer.class));
+                user.metaContainer.addAll(context.<Meta.Container>deserialize(jsonObject.get("meta"), Meta.Container.class));
             }
 
             return user;
@@ -82,6 +80,75 @@ public class User {
             }
 
             return json;
+        }
+    }
+
+    public static class Container extends ArrayList<User> {
+
+        private Group defaultGroup;
+
+        public boolean add(UUID uuid) {
+            if(get(uuid) == null) {
+                User newUser = new User(uuid, defaultGroup);
+                add(newUser);
+                return true;
+            }
+            return false;
+        }
+
+        public User get(UUID uuid) {
+            for(User user : this) {
+                if(user.uuid.equals(uuid)) {
+                    return user;
+                }
+            }
+            return null;
+        }
+
+        public Group getPlayerGroup(UUID uuid) {
+
+            for(User user : this) {
+                if(user.uuid.equals(uuid)) {
+                    return user.group;
+                }
+            }
+
+            User user = new User(uuid, defaultGroup);
+            add(user);
+            return defaultGroup;
+        }
+
+        public boolean contains(UUID uuid) {
+            for(User user : this) {
+                if(user.uuid.equals(uuid)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public Group getDefaultGroup() {
+            return defaultGroup;
+        }
+
+        public void setDefaultGroup(Group defaultGroup) {
+            this.defaultGroup = defaultGroup;
+        }
+
+        @Override
+        public String toString() {
+            String formattedList = "";
+
+            for(User user : this) {
+                String toAdd = String.format(ColorUtils.colorPlayer + "%s" + ColorUtils.colorComma + " {" + ColorUtils.colorGroupText + ColorUtils.colorComma + "}", PlayerUtils.getUsernameFromUUID(user.uuid));
+                if(formattedList.equals("")) {
+                    formattedList += toAdd;
+                } else {
+                    formattedList += "\\n" + toAdd;
+                }
+            }
+
+            return formattedList;
         }
     }
 }

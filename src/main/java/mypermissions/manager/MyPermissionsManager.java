@@ -2,8 +2,7 @@ package mypermissions.manager;
 
 import mypermissions.Constants;
 import mypermissions.api.IPermissionManager;
-import mypermissions.api.container.GroupsContainer;
-import mypermissions.api.container.UsersContainer;
+import mypermissions.api.entities.Group;
 import mypermissions.api.entities.User;
 import mypermissions.config.json.GroupConfig;
 import mypermissions.config.json.UserConfig;
@@ -14,8 +13,8 @@ public class MyPermissionsManager implements IPermissionManager {
 
     private static final String DEFAULT_GROUP_NAME = "default";
 
-    public final GroupsContainer groups = new GroupsContainer();
-    public final UsersContainer users = new UsersContainer();
+    public final Group.Container groups = new Group.Container();
+    public final User.Container users = new User.Container();
 
     public final GroupConfig groupConfig = new GroupConfig(Constants.CONFIG_FOLDER + "GroupConfig.json", this);
     public final UserConfig userConfig = new UserConfig(Constants.CONFIG_FOLDER + "UserConfig.json", this);
@@ -27,8 +26,8 @@ public class MyPermissionsManager implements IPermissionManager {
         groups.clear();
         users.clear();
 
-        groupConfig.init(new GroupsContainer());
-        userConfig.init(new UsersContainer());
+        groupConfig.init(new Group.Container());
+        userConfig.init(new User.Container());
     }
 
     public void saveConfigs() {
