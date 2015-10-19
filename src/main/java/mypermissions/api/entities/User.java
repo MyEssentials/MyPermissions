@@ -43,9 +43,7 @@ public class User {
             return false;
         }
 
-        permLevel = group.hasPermission(permission);
-
-        return permLevel == PermissionLevel.ALLOWED || (Config.instance.fullAccessForOPS.get() && PlayerUtils.isOp(uuid));
+        return (group != null && group.hasPermission(permission) == PermissionLevel.ALLOWED) || (Config.instance.fullAccessForOPS.get() && PlayerUtils.isOp(uuid));
     }
 
     public static class Serializer extends SerializerTemplate<User> {
