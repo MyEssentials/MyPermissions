@@ -2,6 +2,7 @@ package mypermissions.api.entities;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
+
 import myessentials.json.SerializerTemplate;
 import myessentials.utils.ColorUtils;
 import myessentials.utils.PlayerUtils;
@@ -43,7 +44,8 @@ public class User {
             return false;
         }
 
-        return (group != null && group.hasPermission(permission) == PermissionLevel.ALLOWED) || (Config.instance.fullAccessForOPS.get() && PlayerUtils.isOp(uuid));
+        return (group != null && group.hasPermission(permission) == PermissionLevel.ALLOWED) ||
+               (Config.instance.fullAccessForOPS.get() && PlayerUtils.isOp(uuid));
     }
 
     public static class Serializer extends SerializerTemplate<User> {
@@ -60,7 +62,10 @@ public class User {
 
             UUID uuid = UUID.fromString(jsonObject.get("uuid").getAsString());
             User user = new User(uuid);
-            user.group = ((MyPermissionsManager)PermissionProxy.getPermissionManager()).groups.get(jsonObject.get("group").getAsString());
+            JsonElement group = jsonObject.get("group");
+            if (group != null) {
+                user.group = ((MyPermissionsManager)PermissionProxy.getPermissionManager()).groups.get(group.getAsString());
+            }
             if (jsonObject.has("permissions")) {
                 user.permsContainer.addAll(ImmutableList.copyOf(context.<String[]>deserialize(jsonObject.get("permissions"), String[].class)));
             }
@@ -76,7 +81,7 @@ public class User {
             JsonObject json = new JsonObject();
 
             json.addProperty("uuid", user.uuid.toString());
-            json.add("group", context.serialize(user.group));
+            json.addProperty("group", user.group.getName());
             if (!user.permsContainer.isEmpty()) {
                 json.add("permissions", context.serialize(user.permsContainer));
             }
@@ -94,7 +99,8 @@ public class User {
 
         public boolean add(UUID uuid) {
             if(get(uuid) == null) {
-                User newUser = new User(uuid, defaultGroup);
+                Group group = (defaultGroup == null) ? ((MyPermissionsManager)PermissionProxy.getPermissionManager()).groups.get("default") : defaultGroup;
+                User newUser = new User(uuid, group);
                 add(newUser);
                 return true;
             }

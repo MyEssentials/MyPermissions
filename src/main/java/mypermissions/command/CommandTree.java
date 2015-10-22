@@ -12,6 +12,7 @@ import net.minecraft.network.rcon.RConConsoleSource;
 import net.minecraft.server.MinecraftServer;
 
 import java.util.List;
+import java.util.UUID;
 
 public class CommandTree extends Tree<CommandTreeNode> {
 
@@ -81,12 +82,14 @@ public class CommandTree extends Tree<CommandTreeNode> {
         }
 
         if(sender instanceof EntityPlayer) {
-            if (!PermissionProxy.getPermissionManager().hasPermission(((EntityPlayer) sender).getUniqueID(), node.getAnnotation().permission()))
-                throw new CommandException("commands.generic.permission");
-        }
+            UUID uuid = ((EntityPlayer) sender).getUniqueID();
+            String permission = node.getAnnotation().permission();
 
-        if(sender instanceof EntityPlayer && customManager != null) {
-            return customManager.hasPermission(((EntityPlayer) sender).getUniqueID(), node.getAnnotation().permission());
+            if (PermissionProxy.getPermissionManager().hasPermission(uuid, permission) ||
+               (customManager != null && customManager.hasPermission(uuid, permission))) {
+                return true;
+            }
+            return false;
         }
         return true;
     }

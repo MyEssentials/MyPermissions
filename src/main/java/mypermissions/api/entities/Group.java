@@ -2,6 +2,7 @@ package mypermissions.api.entities;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
+
 import myessentials.json.SerializerTemplate;
 import myessentials.utils.ColorUtils;
 import mypermissions.api.container.PermissionsContainer;
@@ -22,6 +23,13 @@ public class Group {
     public final PermissionsContainer permsContainer = new PermissionsContainer();
     public final Meta.Container metaContainer = new Meta.Container();
     public final Container parents = new Container();
+
+    public Group() {
+        this.name = "default";
+        this.permsContainer.add("cmd.*");
+        this.permsContainer.add("mytown.cmd");
+        this.permsContainer.add("mytown.cmd.outsider.*");
+    }
 
     public Group(String name) {
         this.name = name;
