@@ -30,7 +30,6 @@ public class GroupConfig extends JsonConfig<Group, Group.Container> {
     @Override
     public void create(Group.Container items) {
         items.add(new Group());
-        permissionManager.groups.addAll(items);
         super.create(items);
     }
 
