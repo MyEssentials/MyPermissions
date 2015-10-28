@@ -15,7 +15,7 @@ public class BukkitPermissionManager implements IPermissionManager {
     public boolean hasPermission(UUID uuid, String permission) {
         OfflinePlayer player = Bukkit.getPlayer(uuid);
         if(player == null || player.getPlayer() == null) {
-            MyPermissions.instance.LOG.error("Failed to get player with the UUID: " + uuid.toString());
+            //MyPermissions.instance.LOG.error("Failed to get player with the UUID: " + uuid.toString());
             return false;
         }
 
