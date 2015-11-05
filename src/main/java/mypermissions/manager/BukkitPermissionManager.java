@@ -19,19 +19,22 @@ public class BukkitPermissionManager implements IPermissionManager {
             return false;
         }
 
-        return player.getPlayer().hasPermission(trimPermission(permission));
-    }
+        //MyPermissions.instance.LOG.error("Testing permission: " + permission);
+        boolean result = player.getPlayer().hasPermission(permission);
 
-    /**
-     * Bukkit permissions will only check for base permission of each tree since implementing
-     * it is not important and should work as intended 99% of the time.
-     */
-    public String trimPermission(String permission) {
-        CommandTree tree = CommandManager.getTreeFromPermission(permission);
-        if(tree != null) {
-            return tree.getRoot().getAnnotation().permission();
-        } else {
-            return permission;
+        // Check for mods that don't implement node.* entries
+        if (!result) {
+            String lastNode = "";
+            String[] nodes = permission.split("\\.");
+            for (int i = 0; i < nodes.length - 1; i++) {
+                lastNode = lastNode + nodes[i] + ".";
+                //MyPermissions.instance.LOG.error("Testing permission: " + lastNode + "*");
+                if (player.getPlayer().hasPermission(lastNode + "*")) {
+                    result = true;
+                }
+            }
         }
+
+        return result;
     }
 }
