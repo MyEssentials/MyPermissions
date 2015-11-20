@@ -29,6 +29,7 @@ mypermissions.cmd.group.perm.add.help=Adds a perm node to a group
 mypermissions.cmd.group.perm.list.help=Lists all perm nodes from a group
 
 mypermissions.cmd.user.help=Everything related to players
+mypermissions.cmd.user.list.help=Lists all players
 mypermissions.cmd.user.group.help=Everything related to a player's group
 mypermissions.cmd.user.group.show.help=Shows the group which was assigned to the player
 mypermissions.cmd.user.group.set.help=Sets a group to a player

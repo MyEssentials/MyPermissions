@@ -24,25 +24,36 @@ public class ServerToolsPermissionManager implements IPermissionManager {
 
     @Override
     public boolean hasPermission(UUID uuid, String permission) {
+        boolean result;
+
+        //MyPermissions.instance.LOG.error("Testing permission: " + permission);
         try {
-            return (Boolean) serverToolsManagerMethod.invoke(null, trimPermission(permission), uuid);
+            result = (Boolean) serverToolsManagerMethod.invoke(null, permission, uuid);
         } catch (Exception ex) {
             MyPermissions.instance.LOG.error("Error ocurred when trying to check permission!");
             MyPermissions.instance.LOG.error(ExceptionUtils.getStackTrace(ex));
             return false;
         }
-    }
 
-    /**
-     * Another mod in which wildcard does not add permission for the base permission node... why?
-     */
-    public String trimPermission(String permission) {
-        CommandTree tree = CommandManager.getTreeFromPermission(permission);
-        if(tree != null) {
-            return tree.getRoot().getAnnotation().permission();
-        } else {
-            return permission;
+        // Check for mods that don't implement node.* entries
+        if (!result) {
+            String lastNode = "";
+            String[] nodes = permission.split("\\.");
+            for (int i = 0; i < nodes.length - 1; i++) {
+                lastNode = lastNode + nodes[i] + ".";
+                //MyPermissions.instance.LOG.error("Testing permission: " + lastNode + "*");
+                try {
+                    if ((Boolean) serverToolsManagerMethod.invoke(null, lastNode + "*", uuid)) {
+                        result = true;
+                    }
+                } catch (Exception ex) {
+                    MyPermissions.instance.LOG.error("Error ocurred when trying to check permission!");
+                    MyPermissions.instance.LOG.error(ExceptionUtils.getStackTrace(ex));
+                    return false;
+                }
+            }
         }
-    }
 
+        return result;
+    }
 }
