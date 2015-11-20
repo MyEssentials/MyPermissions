@@ -89,7 +89,7 @@ public class CommandTree extends Tree<CommandTreeNode> {
                (customManager != null && customManager.hasPermission(uuid, permission))) {
                 return true;
             }
-            return false;
+            throw new CommandException("commands.generic.permission");
         }
         return true;
     }
