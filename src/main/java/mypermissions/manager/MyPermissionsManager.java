@@ -45,12 +45,7 @@ public class MyPermissionsManager implements IPermissionManager {
 
     @Override
     public boolean hasPermission(UUID uuid, String permission) {
-        boolean updateFile = !users.contains(uuid);
         User user = users.get(uuid);
-
-        if(updateFile) {
-            saveUsers();
-        }
 
         return user != null && user.hasPermission(permission);
     }

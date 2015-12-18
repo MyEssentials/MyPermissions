@@ -10,6 +10,7 @@ import mypermissions.api.container.PermissionsContainer;
 import mypermissions.config.Config;
 import mypermissions.manager.MyPermissionsManager;
 import mypermissions.proxies.PermissionProxy;
+import net.minecraftforge.common.UsernameCache;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class User {
     public Group group;
 
     public final UUID uuid;
+    public String lastPlayerName = null;
     public final PermissionsContainer permsContainer = new PermissionsContainer();
     public final Meta.Container metaContainer = new Meta.Container();
 
@@ -62,6 +64,10 @@ public class User {
 
             UUID uuid = UUID.fromString(jsonObject.get("uuid").getAsString());
             User user = new User(uuid);
+            JsonElement lastPlayerName = jsonObject.get("player");
+            if (lastPlayerName != null) {
+                user.lastPlayerName = lastPlayerName.getAsString();
+            }
             JsonElement group = jsonObject.get("group");
             if (group != null) {
                 user.group = ((MyPermissionsManager)PermissionProxy.getPermissionManager()).groups.get(group.getAsString());
@@ -81,6 +87,9 @@ public class User {
             JsonObject json = new JsonObject();
 
             json.addProperty("uuid", user.uuid.toString());
+            if (user.lastPlayerName != null) {
+                json.addProperty("player", user.lastPlayerName);
+            }
             json.addProperty("group", user.group.getName());
             if (!user.permsContainer.isEmpty()) {
                 json.add("permissions", context.serialize(user.permsContainer));
@@ -135,6 +144,18 @@ public class User {
                     return true;
                 }
             }
+            return false;
+        }
+
+        public boolean updateLastPlayerName(UUID uuid) {
+            User user = get(uuid);
+            String currentPlayerName = UsernameCache.getLastKnownUsername(uuid);
+
+            if (user != null && currentPlayerName != null && !currentPlayerName.equals(user.lastPlayerName)) {
+                user.lastPlayerName = currentPlayerName;
+                return true;
+            }
+
             return false;
         }
 

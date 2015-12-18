@@ -12,6 +12,8 @@ import net.minecraft.command.CommandException;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.CommandEvent;
 
+import java.util.UUID;
+
 public class Ticker {
 
     public static final Ticker instance = new Ticker();
@@ -21,8 +23,12 @@ public class Ticker {
         if(PermissionProxy.getPermissionManager() instanceof MyPermissionsManager) {
             MyPermissionsManager manager = (MyPermissionsManager) PermissionProxy.getPermissionManager();
 
-            if(manager.users.get(ev.player.getGameProfile().getId()) == null) {
-                manager.users.add(ev.player.getGameProfile().getId());
+            UUID uuid = ev.player.getGameProfile().getId();
+            if(manager.users.get(uuid) == null) {
+                manager.users.add(uuid);
+                manager.users.updateLastPlayerName(uuid);
+                manager.saveUsers();
+            } else if(manager.users.updateLastPlayerName(uuid)) {
                 manager.saveUsers();
             }
         }
