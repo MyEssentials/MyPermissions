@@ -92,8 +92,9 @@ public class CommandTreeNode extends TreeNode<CommandTreeNode> {
         List<String> completion = new ArrayList<String>();
         if(commandAnnot.completionKeys().length == 0) {
             for(CommandTreeNode child : getChildren()) {
-                if(child.commandAnnot.name().startsWith(argumentStart)) {
-                    completion.add(child.commandAnnot.name());
+                String localizedCommand = child.getLocalizedName();
+                if(localizedCommand.startsWith(argumentStart)) {
+                    completion.add(localizedCommand);
                 }
             }
         } else {
@@ -115,14 +116,37 @@ public class CommandTreeNode extends TreeNode<CommandTreeNode> {
     }
 
     public void sendSyntax(ICommandSender sender) {
-        sender.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA + getAnnotation().syntax()));
+        sender.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA + getLocalizedSyntax()));
+    }
+
+    public String getLocalizationKey() {
+        String name = getAnnotation().name();
+        CommandTreeNode parent = this;
+        while ((parent = parent.getParent()) != null)
+            name = parent.getAnnotation().name()+"."+name;
+        return  "command."+name;
+    }
+
+    public String getLocalizedSyntax() {
+        String key = getLocalizationKey()+".syntax";
+        return getLocal().hasLocalization(key)? getLocal().getLocalization(key): getAnnotation().syntax();
+    }
+
+    public String getLocalizedName() {
+        String key = getLocalizationKey()+".name";
+        return getLocal().hasLocalization(key)? getLocal().getLocalization(key): getAnnotation().name();
+    }
+
+    public String[] getLocalizedAlias() {
+        String key = getLocalizationKey()+".alias";
+        return getLocal().hasLocalization(key)? getLocal().getLocalization(key).split("\\s*,\\s*"): getAnnotation().alias();
     }
 
     public CommandTreeNode getChild(String name) {
         for(CommandTreeNode child : getChildren()) {
-            if(child.getAnnotation().name().equals(name))
+            if(child.getLocalizedName().equals(name))
                 return child;
-            for(String alias : child.getAnnotation().alias())
+            for(String alias : getLocalizedAlias())
                 if(alias.equals(name))
                     return child;
         }
@@ -131,19 +155,19 @@ public class CommandTreeNode extends TreeNode<CommandTreeNode> {
 
     public String getCommandLine() {
         if(getParent() == null)
-            return "/" + commandAnnot.name();
+            return "/" + getLocalizedName();
         else
-            return getParent().getCommandLine() + " " + commandAnnot.name();
+            return getParent().getCommandLine() + " " + getLocalizedName();
     }
 
     private void constructHelpMenu() {
         String commandLine = getCommandLine();
-        helpMenu = new HelpMenu(getAnnotation().syntax());
+        helpMenu = new HelpMenu(getLocalizedSyntax());
         if(getChildren().isEmpty()) {
             helpMenu.addLine(getLocal().getLocalization(getAnnotation().permission() + ".help"));
         } else {
             for (CommandTreeNode child : getChildren()) {
-                helpMenu.addLineWithHoverText(commandLine + " " + child.getAnnotation().name(), getLocal().getLocalization(child.getAnnotation().permission() + ".help"));
+                helpMenu.addLineWithHoverText(commandLine + " " + child.getLocalizedName(), getLocal().getLocalization(child.getAnnotation().permission() + ".help"));
             }
         }
     }
