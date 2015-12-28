@@ -98,7 +98,7 @@ public class CommandManager {
 
     public static String getPermForCommand(String commandName) {
         for(CommandTree tree : commandTrees) {
-            if(tree.getRoot().getAnnotation().name().equals(commandName)) {
+            if(tree.getRoot().getLocalizedName().equals(commandName)) {
                 return tree.getRoot().getAnnotation().permission();
             }
         }
