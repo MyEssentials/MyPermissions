@@ -53,7 +53,7 @@ public class CommandTreeNode extends TreeNode<CommandTreeNode> {
         @Override
         public String get() {
             String key = getLocalizationKey()+".syntax";
-            return getLocal().hasLocalization(key)? getLocal().getLocalization(key): getAnnotation().name();
+            return getLocal().hasLocalization(key)? getLocal().getLocalization(key): getAnnotation().syntax();
         }
     }, 5, TimeUnit.MINUTES);
 
