@@ -1,34 +1,32 @@
 package mypermissions.test.command;
 
-import com.mojang.authlib.GameProfile;
 import junit.framework.Assert;
-import metest.BaseTest;
-import myessentials.exception.CommandException;
+import metest.api.BaseTest;
+import metest.api.TestPlayer;
 import mypermissions.MyPermissions;
-import mypermissions.api.command.CommandManager;
-import mypermissions.api.entities.User;
-import mypermissions.command.CommandTree;
-import mypermissions.command.Commands;
-import mypermissions.manager.MyPermissionsManager;
-import mypermissions.proxies.PermissionProxy;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.common.util.FakePlayer;
+import mypermissions.command.api.CommandManager;
+import mypermissions.command.core.entities.CommandTree;
+import mypermissions.permission.api.proxy.PermissionProxy;
+import mypermissions.permission.core.bridge.MyPermissionsBridge;
+import mypermissions.permission.core.entities.User;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.UUID;
 
 public class CommandTest extends BaseTest {
 
     private CommandTree commandTree;
-    private EntityPlayerMP player;
+    private TestPlayer player;
+    private static User user;
 
     @Before
     public void shouldInitCommands() {
-        player = new FakePlayer(server.worldServers[0], new GameProfile(UUID.randomUUID(), "CommandTester"));
-        User user = new User(player.getPersistentID());
+        player = new TestPlayer(server, "Command Tester");
+        // REF: Adding a user directly to the manager does NOT give it a default group
+        ((MyPermissionsBridge)PermissionProxy.getPermissionManager()).users.add(player.getPersistentID());
+        user = ((MyPermissionsBridge)PermissionProxy.getPermissionManager()).users.get(player.getPersistentID());
+        user.permsContainer.add("mypermissions.test.*");
         user.permsContainer.add("mypermissions.test");
-        ((MyPermissionsManager)PermissionProxy.getPermissionManager()).users.add(user);
         // REF: The conversion to the default MyPermissionsManager happens a LOT in the code. Pull some of the methods used in the common interface.
         CommandManager.registerCommands(FakeCommands.class, null, MyPermissions.instance.LOCAL, null);
         commandTree = CommandManager.getTree("mypermissions.test");
@@ -41,20 +39,23 @@ public class CommandTest extends BaseTest {
     @Test
     public void shouldProcessCommand() {
         // REF: A layer with which the commands can interact is missing
-        sendCommand("/test add 12 13");
+        sendCommand("test add 12 13");
         Assert.assertEquals("Command did not get processed!", 25, FakeCommands.lastResult);
     }
 
-    @Test(expected = CommandException.class)
+    @Test
     public void shouldFailToProcessCommand() {
         sendCommand("/test add 12 blah");
+        Assert.assertEquals("Command should have failed and the player should get a message", "Num2 is not an integer", player.lastMessage);
     }
 
     private void sendCommand(String command) {
-        try {
-            server.getCommandManager().executeCommand(player, command);
-        } catch (NullPointerException ex) {
-            // Do nothing since this is because we're using FakePlayers
-        }
+        server.getCommandManager().executeCommand(player, command);
+    }
+
+    @AfterClass
+    public static void tearDown() {
+        // REF: Removing users by uuid is not yet implemented
+        ((MyPermissionsBridge)PermissionProxy.getPermissionManager()).users.remove(user);
     }
 }

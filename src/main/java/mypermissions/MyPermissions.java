@@ -4,12 +4,12 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.*;
 import myessentials.Localization;
-import mypermissions.api.command.CommandManager;
-import mypermissions.command.Commands;
-import mypermissions.config.Config;
-import mypermissions.handlers.Ticker;
-import mypermissions.manager.MyPermissionsManager;
-import mypermissions.proxies.PermissionProxy;
+import mypermissions.command.api.CommandManager;
+import mypermissions.command.core.Commands;
+import mypermissions.core.config.Config;
+import mypermissions.core.handlers.Ticker;
+import mypermissions.permission.core.bridge.MyPermissionsBridge;
+import mypermissions.permission.api.proxy.PermissionProxy;
 import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.Logger;
 
@@ -50,7 +50,7 @@ public class MyPermissions {
     public void serverStarting(FMLServerStartingEvent ev) {
         loadConfig();
         CommandManager.registerCommands(Commands.class, null, MyPermissions.instance.LOCAL, null);
-        if(PermissionProxy.getPermissionManager() instanceof MyPermissionsManager) {
+        if(PermissionProxy.getPermissionManager() instanceof MyPermissionsBridge) {
             CommandManager.registerCommands(Commands.MyPermissionManagerCommands.class, "mypermissions.cmd", MyPermissions.instance.LOCAL, null);
         }
     }

@@ -1,9 +1,10 @@
 package mypermissions.test.command;
 
-import myessentials.exception.CommandException;
+
 import myessentials.utils.StringUtils;
-import mypermissions.api.command.CommandResponse;
-import mypermissions.api.command.annotation.Command;
+import mypermissions.command.api.CommandResponse;
+import mypermissions.command.api.annotation.Command;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class FakeCommands {
             parentName = "mypermissions.test",
             syntax = "/test child")
     public static CommandResponse testChildCommand(ICommandSender sender, List<String> args) {
-        throw new CommandException();
+        throw new CommandException("Error");
     }
 
     @Command(
