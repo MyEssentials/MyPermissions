@@ -26,16 +26,16 @@ public class CommandModel extends CommandBase implements PermissionObject {
 
     @Override
     public List getCommandAliases() {
-        return Arrays.asList(commandTree.getRoot().getAnnotation().alias());
+        return Arrays.asList(commandTree.getRoot().getLocalizedAlias());
     }
 
     @Override
     public String getCommandName() {
-        return commandTree.getRoot().getAnnotation().name();
+        return commandTree.getRoot().getLocalizedName();
     }
 
     public String getCommandUsage(ICommandSender sender) {
-        return commandTree.getRoot().getAnnotation().syntax();
+        return commandTree.getRoot().getLocalizedSyntax();
     }
 
     /**
