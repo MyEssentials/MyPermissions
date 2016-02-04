@@ -1,7 +1,7 @@
 package mypermissions.core.config;
 
-import myessentials.config.ConfigProperty;
-import myessentials.config.ConfigTemplate;
+import myessentials.config.api.ConfigProperty;
+import myessentials.config.api.ConfigTemplate;
 
 public class Config extends ConfigTemplate {
 

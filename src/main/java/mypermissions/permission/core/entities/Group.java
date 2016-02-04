@@ -3,9 +3,14 @@ package mypermissions.permission.core.entities;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
 
-import myessentials.json.SerializerTemplate;
+import myessentials.chat.api.ChatComponentFormatted;
+import myessentials.chat.core.style.IChatFormat;
+import myessentials.json.api.SerializerTemplate;
 import myessentials.utils.ColorUtils;
+import mypermissions.MyPermissions;
 import mypermissions.permission.core.container.PermissionsContainer;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -16,7 +21,7 @@ import java.util.Iterator;
  * Each player can only have one group assigned to.
  * Groups have a hierarchy.
  */
-public class Group {
+public class Group implements IChatFormat {
 
     private String name;
 
@@ -60,6 +65,25 @@ public class Group {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public IChatComponent toChatMessage() {
+
+        ChatComponentText parents = new ChatComponentText("");
+        for (Group parent : this.parents) {
+            IChatComponent parentComponent = MyPermissions.instance.LOCAL.getLocalization("mypermissions.format.group.parent", new ChatComponentText(parent.getName()));
+            if (parents.getSiblings().size() == 0) {
+                parents.appendSibling(new ChatComponentText(parent.getName()).setChatStyle(ColorUtils.styleGroupParents));
+            } else {
+                parents.appendSibling(new ChatComponentText(", ").setChatStyle(ColorUtils.styleComma))
+                       .appendSibling(new ChatComponentText(parent.getName()).setChatStyle(ColorUtils.styleGroupParents));
+            }
+        }
+
+
+
+        return new ChatComponentText();
     }
 
     public static class Serializer extends SerializerTemplate<Group> {

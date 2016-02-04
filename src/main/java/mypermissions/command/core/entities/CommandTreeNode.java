@@ -2,12 +2,12 @@ package mypermissions.command.core.entities;
 
 import myessentials.Localization;
 import myessentials.MyEssentialsCore;
-import myessentials.chat.HelpMenu;
+import myessentials.chat.api.HelpMenu;
 import mypermissions.command.api.CommandCompletion;
 import mypermissions.command.api.CommandManager;
 import mypermissions.command.api.CommandResponse;
 import mypermissions.command.api.annotation.Command;
-import myessentials.entities.TreeNode;
+import myessentials.entities.api.TreeNode;
 import myessentials.utils.StringUtils;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
@@ -140,10 +140,10 @@ public class CommandTreeNode extends TreeNode<CommandTreeNode> {
         String commandLine = getCommandLine();
         helpMenu = new HelpMenu(getAnnotation().syntax());
         if(getChildren().isEmpty()) {
-            helpMenu.addLine(getLocal().getLocalization(getAnnotation().permission() + ".help"));
+            //helpMenu.addLine(getLocal().getLocalization(getAnnotation().permission() + ".help"));
         } else {
             for (CommandTreeNode child : getChildren()) {
-                helpMenu.addLineWithHoverText(commandLine + " " + child.getAnnotation().name(), getLocal().getLocalization(child.getAnnotation().permission() + ".help"));
+                //helpMenu.addLineWithHoverText(commandLine + " " + child.getAnnotation().name(), getLocal().getLocalization(child.getAnnotation().permission() + ".help"));
             }
         }
     }
