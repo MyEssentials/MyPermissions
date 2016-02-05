@@ -1,7 +1,7 @@
 package mypermissions.command;
 
 import myessentials.Localization;
-import myessentials.entities.Tree;
+import myessentials.entities.api.Tree;
 import mypermissions.api.IPermissionManager;
 import mypermissions.proxies.PermissionProxy;
 import net.minecraft.command.CommandException;

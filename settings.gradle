@@ -1,2 +1,4 @@
 rootProject.name = "MyPermissions"
-include ":MyEssentials-Core"
+include ":MyEssentials-Core", ":MyEssentials-TestSuite"
+project(":MyEssentials-TestSuite").projectDir = new File('MyEssentials-Core/MyEssentials-TestSuite')
+

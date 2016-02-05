@@ -2,7 +2,7 @@ package mypermissions.config.json;
 
 import com.google.common.reflect.TypeToken;
 import com.google.gson.GsonBuilder;
-import myessentials.json.JsonConfig;
+import myessentials.json.api.JsonConfig;
 import mypermissions.api.entities.Group;
 import mypermissions.api.entities.Meta;
 import mypermissions.config.Config;

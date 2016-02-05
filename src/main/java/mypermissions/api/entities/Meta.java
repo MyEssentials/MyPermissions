@@ -1,7 +1,7 @@
 package mypermissions.api.entities;
 
 import com.google.gson.*;
-import myessentials.json.SerializerTemplate;
+import myessentials.json.api.SerializerTemplate;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
