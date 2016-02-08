@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
 
 import myessentials.chat.api.ChatComponentFormatted;
-import myessentials.chat.core.style.IChatFormat;
+import myessentials.chat.api.IChatFormat;
 import myessentials.json.api.SerializerTemplate;
 import myessentials.utils.ColorUtils;
 import mypermissions.MyPermissions;
@@ -81,9 +81,7 @@ public class Group implements IChatFormat {
             }
         }
 
-
-
-        return new ChatComponentText();
+        return new ChatComponentText("NOT YET IMPLEMENTED");
     }
 
     public static class Serializer extends SerializerTemplate<Group> {
@@ -118,7 +116,7 @@ public class Group implements IChatFormat {
         }
     }
 
-    public static class Container extends ArrayList<Group> {
+    public static class Container extends ArrayList<Group> implements IChatFormat {
 
         public void remove(String groupName) {
             for (Iterator<Group> it = iterator(); it.hasNext();) {
@@ -147,26 +145,16 @@ public class Group implements IChatFormat {
         }
 
         @Override
-        public String toString() {
-            String formattedList = "";
-            for (Group group : this) {
-                String parents = "";
-                for (Group parent : group.parents) {
-                    if (parents.equals("")) {
-                        parents += parent.getName();
-                    } else {
-                        parents += ", " +  parent.getName();
-                    }
-                }
+        public IChatComponent toChatMessage() {
 
-                String formattedGroup = group.getName() + ColorUtils.colorComma + " ( " + ColorUtils.colorGroupText + (group.parents.isEmpty() ? "" : ColorUtils.colorComma + " | " + ColorUtils.colorGroupText + "P: " + ColorUtils.colorGroupParents + parents) + ColorUtils.colorComma + " )";
-                if (formattedList.equals("")) {
-                    formattedList += formattedGroup;
-                } else {
-                    formattedList += "\\n" + formattedGroup;
-                }
+            ChatComponentText message = new ChatComponentText("Groups \n");
+
+            for (Group group : this) {
+                message.appendSibling(group.toChatMessage());
+                message.appendSibling(new ChatComponentText("\n"));
             }
-            return formattedList;
+
+            return message;
         }
     }
 }

@@ -11,6 +11,7 @@ import mypermissions.command.core.exception.PermissionCommandException;
 import mypermissions.permission.core.bridge.MyPermissionsBridge;
 import mypermissions.permission.api.proxy.PermissionProxy;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatComponentText;
 
 import java.util.List;
 import java.util.UUID;
@@ -34,7 +35,7 @@ public class Commands {
     }
 
     protected static void sendChat(ICommandSender sender, String localKey, Object... args) {
-        ChatUtils.sendChat(sender, MyPermissions.instance.LOCAL.getLocalization(localKey, args));
+        sender.addChatMessage(MyPermissions.instance.LOCAL.getLocalization(localKey, args));
     }
 
     @Command(
@@ -62,12 +63,13 @@ public class Commands {
             syntax = "/perm config reload")
     public static CommandResponse configReloadCommand(ICommandSender sender, List<String> args) {
         MyPermissions.instance.loadConfig();
-        ChatUtils.sendChat(sender, "Successfully reloaded mod configs!");
+        // REF: Change these to localized versions of themselves
+        sender.addChatMessage(new ChatComponentText("Successfully reloaded mod configs!"));
         if(PermissionProxy.getPermissionManager() instanceof MyPermissionsBridge) {
             ((MyPermissionsBridge) PermissionProxy.getPermissionManager()).loadConfigs();
-            ChatUtils.sendChat(sender, "Successfully reloaded permission configs!");
+            sender.addChatMessage(new ChatComponentText("Successfully reloaded permission configs!"));
         } else {
-            ChatUtils.sendChat(sender, "Currently using third party permission system.");
+            sender.addChatMessage(new ChatComponentText("Currently using third party permission system."));
         }
         return CommandResponse.DONE;
     }

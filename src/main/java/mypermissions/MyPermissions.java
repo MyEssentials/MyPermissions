@@ -28,7 +28,7 @@ public class MyPermissions {
 
         Config.instance.init(Constants.CONFIG_FOLDER + "/MyPermissions.cfg", "MyPermissions");
         LOCAL = new Localization(Constants.CONFIG_FOLDER, Config.instance.localization.get(), "/mypermissions/localization/", MyPermissions.class);
-        LOG.info(LOCAL.getLocalization("mypermissions.notification.user.group.set"));
+
         FMLCommonHandler.instance().bus().register(Ticker.instance);
         MinecraftForge.EVENT_BUS.register(Ticker.instance);
     }

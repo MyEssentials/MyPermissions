@@ -47,4 +47,4 @@ mypermissions.format.group=[7|%s][f|( P:]%s[f| )]
 mypermissions.format.group=&[7%s]&[f]( P: %s &[f])
 mypermissions.notification.group.renamed=[a]Group has been renamed successfully
 mypermissions.notification.group.renamed=[a]Group has been [5|renamed] successfully
-mypermissions.notification.group.renamed=[a|Group has been] [5|renamed] [a|successfully]
+mypermissions.notification.group.renamed=[a|Group has been][5| renamed][a| successfully]

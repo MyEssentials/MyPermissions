@@ -11,9 +11,11 @@ import mypermissions.command.api.CommandResponse;
 import mypermissions.command.api.annotation.Command;
 import myessentials.entities.api.TreeNode;
 import myessentials.utils.StringUtils;
+import mypermissions.command.core.chat.ChatComponentHelpMenu;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -32,28 +34,20 @@ public class CommandTreeNode extends TreeNode<CommandTreeNode> {
     private Method method;
     private String localizationKey;
 
-    private HelpMenu helpMenu;
-    private Supplier<String[]> alias = Suppliers.memoizeWithExpiration(new Supplier<String[]>() {
-        @Override
-        public String[] get() {
-            String key = getLocalizationKey()+".alias";
-            return getLocal().hasLocalization(key)? getLocal().getLocalization(key).split("\\s*,\\s*"): getAnnotation().alias();
-        }
-    }, 5, TimeUnit.MINUTES);
-
+    private ChatComponentHelpMenu helpMenu;
     private Supplier<String> name = Suppliers.memoizeWithExpiration(new Supplier<String>() {
         @Override
         public String get() {
-            String key = getLocalizationKey()+".name";
-            return getLocal().hasLocalization(key)? getLocal().getLocalization(key): getAnnotation().name();
+            String key = getLocalizationKey() + ".name";
+            return getLocal().hasLocalization(key) ? getLocal().getLocalization(key).getUnformattedText() : getAnnotation().name();
         }
     }, 5, TimeUnit.MINUTES);
 
     private Supplier<String> syntax = Suppliers.memoizeWithExpiration(new Supplier<String>() {
         @Override
         public String get() {
-            String key = getLocalizationKey()+".syntax";
-            return getLocal().hasLocalization(key)? getLocal().getLocalization(key): getAnnotation().syntax();
+            String key = getLocalizationKey() + ".syntax";
+            return getLocal().hasLocalization(key) ? getLocal().getLocalization(key).getUnformattedText() : getAnnotation().syntax();
         }
     }, 5, TimeUnit.MINUTES);
 
@@ -144,9 +138,10 @@ public class CommandTreeNode extends TreeNode<CommandTreeNode> {
     }
 
     public void sendHelpMessage(ICommandSender sender, int page) {
-        if(helpMenu == null)
-            constructHelpMenu();
-        helpMenu.sendHelpPage(sender, page);
+        if(helpMenu == null) {
+            helpMenu = new ChatComponentHelpMenu(9, this);
+        }
+        helpMenu.sendPage(sender, page);
     }
 
     public void sendSyntax(ICommandSender sender) {
@@ -165,17 +160,17 @@ public class CommandTreeNode extends TreeNode<CommandTreeNode> {
         return name.get();
     }
 
-    public String[] getLocalizedAlias() {
-        return alias.get();
-    }
-
     public CommandTreeNode getChild(String name) {
         for(CommandTreeNode child : getChildren()) {
-            if(child.getLocalizedName().equals(name))
+            if(child.getLocalizedName().equals(name)) {
                 return child;
-            for(String alias : getLocalizedAlias())
-                if(alias.equals(name))
-                    return child;
+            } else {
+                for (String alias : child.getAnnotation().alias()) {
+                    if (alias.equals(name)) {
+                        return child;
+                    }
+                }
+            }
         }
         return null;
     }
@@ -185,19 +180,6 @@ public class CommandTreeNode extends TreeNode<CommandTreeNode> {
             return "/" + getLocalizedName();
         else
             return getParent().getCommandLine() + " " + getLocalizedName();
-    }
-
-    private void constructHelpMenu() {
-        String commandLine = getCommandLine();
-        helpMenu = new HelpMenu(getLocalizedSyntax());
-        if(getChildren().isEmpty()) {
-            //helpMenu.addLine(getLocal().getLocalization(getAnnotation().permission() + ".help"));
-        } else {
-            for (CommandTreeNode child : getChildren()) {
-                helpMenu.addLineWithHoverText(commandLine + " " + child.getLocalizedName(), getLocal().getLocalization(child.getAnnotation().permission() + ".help"));
-
-            }
-        }
     }
 
     public Localization getLocal() {

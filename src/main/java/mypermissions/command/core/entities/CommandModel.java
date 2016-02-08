@@ -26,7 +26,7 @@ public class CommandModel extends CommandBase implements PermissionObject {
 
     @Override
     public List getCommandAliases() {
-        return Arrays.asList(commandTree.getRoot().getLocalizedAlias());
+        return Arrays.asList(commandTree.getRoot().getAnnotation().alias());
     }
 
     @Override

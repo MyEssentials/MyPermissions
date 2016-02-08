@@ -3,13 +3,17 @@ package mypermissions.permission.core.entities;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
 
+import myessentials.chat.api.IChatFormat;
 import myessentials.json.api.SerializerTemplate;
 import myessentials.utils.ColorUtils;
 import myessentials.utils.PlayerUtils;
+import mypermissions.MyPermissions;
 import mypermissions.permission.core.container.PermissionsContainer;
 import mypermissions.core.config.Config;
 import mypermissions.permission.core.bridge.MyPermissionsBridge;
 import mypermissions.permission.api.proxy.PermissionProxy;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.UsernameCache;
 
 import java.lang.reflect.Type;
@@ -19,7 +23,7 @@ import java.util.UUID;
 /**
  * A wrapper around the EntityPlayer with additional objects for permissions
  */
-public class User {
+public class User implements IChatFormat {
 
     public Group group;
 
@@ -48,6 +52,11 @@ public class User {
 
         return (group != null && group.hasPermission(permission) == PermissionLevel.ALLOWED) ||
                (Config.instance.fullAccessForOPS.get() && PlayerUtils.isOp(uuid));
+    }
+
+    @Override
+    public IChatComponent toChatMessage() {
+        return MyPermissions.instance.LOCAL.getLocalization("mypermissions.format.user", lastPlayerName, group.getName());
     }
 
     public static class Serializer extends SerializerTemplate<User> {
@@ -102,7 +111,7 @@ public class User {
         }
     }
 
-    public static class Container extends ArrayList<User> {
+    public static class Container extends ArrayList<User> implements IChatFormat {
 
         private Group defaultGroup;
 
@@ -168,19 +177,15 @@ public class User {
         }
 
         @Override
-        public String toString() {
-            String formattedList = "";
+        public IChatComponent toChatMessage() {
+            ChatComponentText message = new ChatComponentText("Users: \n");
 
-            for(User user : this) {
-                String toAdd = String.format(ColorUtils.colorPlayer + "%s" + ColorUtils.colorComma + " {" + ColorUtils.colorGroupText + ColorUtils.colorComma + "}", PlayerUtils.getUsernameFromUUID(user.uuid));
-                if(formattedList.equals("")) {
-                    formattedList += toAdd;
-                } else {
-                    formattedList += "\\n" + toAdd;
-                }
+            for (User user : this) {
+                message.appendSibling(user.toChatMessage());
+                message.appendSibling(new ChatComponentText("\n"));
             }
 
-            return formattedList;
+            return message;
         }
     }
 }
