@@ -20,7 +20,7 @@ public class ChatComponentHelpMenu extends ChatComponentMultiPage {
     public void construct() {
 
         for (CommandTreeNode subCommand : command.getChildren()) {
-            this.add(new ChatComponentFormatted("[7| %s %s]", subCommand.getCommandLine(), subCommand.getLocalizedName()));
+            this.add(new ChatComponentFormatted("[7| %s]", subCommand.getCommandLine()));
         }
 
     }
