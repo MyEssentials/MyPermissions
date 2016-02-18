@@ -172,7 +172,7 @@ public class User {
             String formattedList = "";
 
             for(User user : this) {
-                String toAdd = String.format(ColorUtils.colorPlayer + "%s" + ColorUtils.colorComma + " {" + ColorUtils.colorGroupText + ColorUtils.colorComma + "}", PlayerUtils.getUsernameFromUUID(user.uuid));
+                String toAdd = String.format(ColorUtils.stylePlayer + "%s" + ColorUtils.styleComma + " {" + ColorUtils.styleGroupText + ColorUtils.styleComma + "}", PlayerUtils.getUsernameFromUUID(user.uuid));
                 if(formattedList.equals("")) {
                     formattedList += toAdd;
                 } else {

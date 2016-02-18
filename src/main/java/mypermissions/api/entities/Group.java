@@ -135,7 +135,7 @@ public class Group {
                     }
                 }
 
-                String formattedGroup = group.getName() + ColorUtils.colorComma + " ( " + ColorUtils.colorGroupText + (group.parents.isEmpty() ? "" : ColorUtils.colorComma + " | " + ColorUtils.colorGroupText + "P: " + ColorUtils.colorGroupParents + parents) + ColorUtils.colorComma + " )";
+                String formattedGroup = group.getName() + ColorUtils.styleComma + " ( " + ColorUtils.styleGroupText + (group.parents.isEmpty() ? "" : ColorUtils.styleComma + " | " + ColorUtils.styleGroupText + "P: " + ColorUtils.styleGroupParents + parents) + ColorUtils.styleComma + " )";
                 if (formattedList.equals("")) {
                     formattedList += formattedGroup;
                 } else {
