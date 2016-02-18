@@ -20,7 +20,7 @@ public class ChatComponentHelpMenu extends ChatComponentMultiPage {
     public void construct() {
 
         for (CommandTreeNode subCommand : command.getChildren()) {
-            this.add(new ChatComponentFormatted("[7| %s]", subCommand.getCommandLine()));
+            this.add(new ChatComponentFormatted("{7| %s}", subCommand.getCommandLine()));
         }
 
     }
@@ -28,7 +28,7 @@ public class ChatComponentHelpMenu extends ChatComponentMultiPage {
     @Override
     public List<IChatComponent> getHeader(int page) {
         List<IChatComponent> header = super.getHeader(page);
-        header.add(new ChatComponentFormatted("[9| - Command: ][9o|%s]", command.getLocalizedSyntax()));
+        header.add(new ChatComponentFormatted("{9| - Command: }{9o|%s}", command.getLocalizedSyntax()));
         return header;
     }
 }
