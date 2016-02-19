@@ -2,16 +2,14 @@ package mypermissions.permission.core.entities;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
-
 import myessentials.chat.api.IChatFormat;
 import myessentials.json.api.SerializerTemplate;
-import myessentials.utils.ColorUtils;
 import myessentials.utils.PlayerUtils;
 import mypermissions.MyPermissions;
-import mypermissions.permission.core.container.PermissionsContainer;
 import mypermissions.core.config.Config;
-import mypermissions.permission.core.bridge.MyPermissionsBridge;
 import mypermissions.permission.api.proxy.PermissionProxy;
+import mypermissions.permission.core.bridge.MyPermissionsBridge;
+import mypermissions.permission.core.container.PermissionsContainer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.UsernameCache;

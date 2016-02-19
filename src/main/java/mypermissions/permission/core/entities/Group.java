@@ -2,8 +2,6 @@ package mypermissions.permission.core.entities;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
-
-import myessentials.chat.api.ChatComponentFormatted;
 import myessentials.chat.api.IChatFormat;
 import myessentials.json.api.SerializerTemplate;
 import myessentials.utils.ColorUtils;
@@ -146,7 +144,6 @@ public class Group implements IChatFormat {
 
         @Override
         public IChatComponent toChatMessage() {
-
             ChatComponentText message = new ChatComponentText("Groups \n");
 
             for (Group group : this) {
