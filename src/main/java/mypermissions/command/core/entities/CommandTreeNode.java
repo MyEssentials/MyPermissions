@@ -2,7 +2,7 @@ package mypermissions.command.core.entities;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
-import myessentials.Localization;
+import myessentials.localization.api.Local;
 import myessentials.MyEssentialsCore;
 import myessentials.entities.api.TreeNode;
 import myessentials.utils.StringUtils;
@@ -180,7 +180,7 @@ public class CommandTreeNode extends TreeNode<CommandTreeNode> {
             return getParent().getCommandLine() + " " + getLocalizedName();
     }
 
-    public Localization getLocal() {
+    public Local getLocal() {
         return getCommandTree().getLocal();
     }
 

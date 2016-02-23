@@ -2,10 +2,12 @@ package mypermissions.permission.core.entities;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
+import myessentials.chat.api.ChatComponentFormatted;
+import myessentials.chat.api.ChatComponentList;
 import myessentials.chat.api.IChatFormat;
 import myessentials.json.api.SerializerTemplate;
+import myessentials.localization.api.LocalManager;
 import myessentials.utils.ColorUtils;
-import mypermissions.MyPermissions;
 import mypermissions.permission.core.container.PermissionsContainer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
@@ -67,19 +69,7 @@ public class Group implements IChatFormat {
 
     @Override
     public IChatComponent toChatMessage() {
-
-        ChatComponentText parents = new ChatComponentText("");
-        for (Group parent : this.parents) {
-            IChatComponent parentComponent = MyPermissions.instance.LOCAL.getLocalization("mypermissions.format.group.parent", new ChatComponentText(parent.getName()));
-            if (parents.getSiblings().size() == 0) {
-                parents.appendSibling(new ChatComponentText(parent.getName()).setChatStyle(ColorUtils.styleGroupParents));
-            } else {
-                parents.appendSibling(new ChatComponentText(", ").setChatStyle(ColorUtils.styleComma))
-                       .appendSibling(new ChatComponentText(parent.getName()).setChatStyle(ColorUtils.styleGroupParents));
-            }
-        }
-
-        return new ChatComponentText("NOT YET IMPLEMENTED");
+        return LocalManager.get("mypermissions.format.group.short", name);
     }
 
     public static class Serializer extends SerializerTemplate<Group> {
@@ -144,14 +134,25 @@ public class Group implements IChatFormat {
 
         @Override
         public IChatComponent toChatMessage() {
-            ChatComponentText message = new ChatComponentText("Groups \n");
+            IChatComponent root = new ChatComponentList();
+            root.appendSibling(LocalManager.get("myessentials.format.list.header", new ChatComponentFormatted("{9|GROUPS}")));
 
             for (Group group : this) {
-                message.appendSibling(group.toChatMessage());
-                message.appendSibling(new ChatComponentText("\n"));
+                ChatComponentText parents = new ChatComponentText("");
+                for (Group parent : group.parents) {
+                    IChatComponent parentComponent = LocalManager.get("mypermissions.format.group.parent", new ChatComponentText(parent.getName()));
+                    if (parents.getSiblings().size() == 0) {
+                        parents.appendSibling(parentComponent);
+                    } else {
+                        parents.appendSibling(new ChatComponentText(", ").setChatStyle(ColorUtils.styleComma))
+                                .appendSibling(parentComponent);
+                    }
+                }
+
+                root.appendSibling(LocalManager.get("mypermissions.format.group.long", group.name, parents));
             }
 
-            return message;
+            return root;
         }
     }
 }

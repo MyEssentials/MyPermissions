@@ -1,6 +1,6 @@
 package mypermissions.command.core.entities;
 
-import myessentials.Localization;
+import myessentials.localization.api.Local;
 import myessentials.entities.api.Tree;
 import mypermissions.permission.core.bridge.IPermissionBridge;
 import mypermissions.permission.api.proxy.PermissionProxy;
@@ -16,15 +16,15 @@ import java.util.UUID;
 
 public class CommandTree extends Tree<CommandTreeNode> {
 
-    private Localization local;
+    private Local local;
     private IPermissionBridge customManager;
 
-    public CommandTree(CommandTreeNode root, Localization local) {
+    public CommandTree(CommandTreeNode root, Local local) {
         super(root);
         this.local = local;
     }
 
-    public CommandTree(CommandTreeNode root, Localization local, IPermissionBridge customManager) {
+    public CommandTree(CommandTreeNode root, Local local, IPermissionBridge customManager) {
         this(root, local);
         this.customManager = customManager;
     }
@@ -94,7 +94,7 @@ public class CommandTree extends Tree<CommandTreeNode> {
         return true;
     }
 
-    public Localization getLocal() {
+    public Local getLocal() {
         return local;
     }
 }

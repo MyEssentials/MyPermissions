@@ -1,7 +1,7 @@
 package mypermissions.command.api;
 
 import cpw.mods.fml.common.Loader;
-import myessentials.Localization;
+import myessentials.localization.api.Local;
 import myessentials.MyEssentialsCore;
 import mypermissions.permission.core.bridge.IPermissionBridge;
 import mypermissions.command.api.annotation.Command;
@@ -36,7 +36,7 @@ public class CommandManager {
     /**
      * It is enforced that the class has to contain ONE root command .
      */
-    public static void registerCommands(Class clazz, String rootPerm, Localization local, IPermissionBridge customManager) {
+    public static void registerCommands(Class clazz, String rootPerm, Local local, IPermissionBridge customManager) {
         CommandTreeNode root = null;
         CommandTree commandTree = rootPerm == null ? null : getTree(rootPerm);
 

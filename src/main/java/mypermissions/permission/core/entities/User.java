@@ -2,15 +2,16 @@ package mypermissions.permission.core.entities;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
+import myessentials.chat.api.ChatComponentFormatted;
+import myessentials.chat.api.ChatComponentList;
 import myessentials.chat.api.IChatFormat;
 import myessentials.json.api.SerializerTemplate;
+import myessentials.localization.api.LocalManager;
 import myessentials.utils.PlayerUtils;
-import mypermissions.MyPermissions;
 import mypermissions.core.config.Config;
 import mypermissions.permission.api.proxy.PermissionProxy;
 import mypermissions.permission.core.bridge.MyPermissionsBridge;
 import mypermissions.permission.core.container.PermissionsContainer;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.UsernameCache;
 
@@ -54,7 +55,7 @@ public class User implements IChatFormat {
 
     @Override
     public IChatComponent toChatMessage() {
-        return MyPermissions.instance.LOCAL.getLocalization("mypermissions.format.user", lastPlayerName, group.getName());
+        return LocalManager.get("mypermissions.format.user.short", lastPlayerName);
     }
 
     public static class Serializer extends SerializerTemplate<User> {
@@ -176,14 +177,14 @@ public class User implements IChatFormat {
 
         @Override
         public IChatComponent toChatMessage() {
-            ChatComponentText message = new ChatComponentText("Users: \n");
+            ChatComponentList root = new ChatComponentList();
+            root.appendSibling(LocalManager.get("myessentials.format.list.header", new ChatComponentFormatted("{9|USERS}")));
 
             for (User user : this) {
-                message.appendSibling(user.toChatMessage());
-                message.appendSibling(new ChatComponentText("\n"));
+                root.appendSibling(LocalManager.get("mypermissions.format.user.long", user.lastPlayerName, user.group));
             }
 
-            return message;
+            return root;
         }
     }
 }

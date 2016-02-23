@@ -1,12 +1,17 @@
 package mypermissions.permission.core.container;
 
 
+import myessentials.chat.api.ChatComponentFormatted;
+import myessentials.chat.api.ChatComponentList;
+import myessentials.chat.api.IChatFormat;
+import myessentials.localization.api.LocalManager;
 import mypermissions.permission.core.entities.PermissionLevel;
+import net.minecraft.util.IChatComponent;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class PermissionsContainer extends ArrayList<String> {
+public class PermissionsContainer extends ArrayList<String> implements IChatFormat {
 
     public PermissionLevel hasPermission(String permission) {
         PermissionLevel permLevel = PermissionLevel.NONE;
@@ -46,15 +51,12 @@ public class PermissionsContainer extends ArrayList<String> {
     }
 
     @Override
-    public String toString() {
-        String formattedList = "";
+    public IChatComponent toChatMessage() {
+        IChatComponent root = new ChatComponentList();
+        root.appendSibling(LocalManager.get("myessentials.format.list.header", new ChatComponentFormatted("{9|PERMISSIONS}")));
         for(String perm : this) {
-            if(formattedList.equals("")) {
-                formattedList += perm;
-            } else {
-                formattedList += "\\n" + perm;
-            }
+            root.appendSibling(LocalManager.get("mypermissions.format.permission", perm));
         }
-        return formattedList;
+        return root;
     }
 }

@@ -1,17 +1,17 @@
 package mypermissions.command.core;
 
+import myessentials.chat.api.ChatManager;
+import myessentials.localization.api.LocalManager;
 import myessentials.utils.PlayerUtils;
+import mypermissions.MyPermissions;
 import mypermissions.command.api.CommandResponse;
 import mypermissions.command.api.annotation.Command;
-import myessentials.utils.ChatUtils;
-import mypermissions.MyPermissions;
+import mypermissions.command.core.exception.PermissionCommandException;
+import mypermissions.permission.api.proxy.PermissionProxy;
+import mypermissions.permission.core.bridge.MyPermissionsBridge;
 import mypermissions.permission.core.entities.Group;
 import mypermissions.permission.core.entities.User;
-import mypermissions.command.core.exception.PermissionCommandException;
-import mypermissions.permission.core.bridge.MyPermissionsBridge;
-import mypermissions.permission.api.proxy.PermissionProxy;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatComponentText;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,7 +21,7 @@ public class Commands {
     protected static Group getGroupFromName(String name) {
         Group group = getManager().groups.get(name);
         if(group == null) {
-            throw new PermissionCommandException("mypermissions.cmd.err.group.notExist", name);
+            throw new PermissionCommandException("mypermissions.cmd.err.group.notExist", LocalManager.get("mypermissions.format.group.short", name));
         }
         return group;
     }
@@ -29,13 +29,9 @@ public class Commands {
     protected static UUID getUUIDFromUsername(String username) {
         UUID uuid = PlayerUtils.getUUIDFromUsername(username);
         if(uuid == null) {
-            throw new PermissionCommandException("mypermissions.cmd.err.player.notExist", username);
+            throw new PermissionCommandException("mypermissions.cmd.err.player.notExist", LocalManager.get("mypermissions.format.user.short", username));
         }
         return uuid;
-    }
-
-    protected static void sendChat(ICommandSender sender, String localKey, Object... args) {
-        sender.addChatMessage(MyPermissions.instance.LOCAL.getLocalization(localKey, args));
     }
 
     @Command(
@@ -64,12 +60,12 @@ public class Commands {
     public static CommandResponse configReloadCommand(ICommandSender sender, List<String> args) {
         MyPermissions.instance.loadConfig();
         // REF: Change these to localized versions of themselves
-        sender.addChatMessage(new ChatComponentText("Successfully reloaded mod configs!"));
+        ChatManager.send(sender, "mypermissions.notification.config.reloaded");
         if(PermissionProxy.getPermissionManager() instanceof MyPermissionsBridge) {
             ((MyPermissionsBridge) PermissionProxy.getPermissionManager()).loadConfigs();
-            sender.addChatMessage(new ChatComponentText("Successfully reloaded permission configs!"));
+            ChatManager.send(sender, "mypermissions.notification.permissions.config.reloaded");
         } else {
-            sender.addChatMessage(new ChatComponentText("Currently using third party permission system."));
+            ChatManager.send(sender, "mypermissions.notification.permissions.third_party");
         }
         return CommandResponse.DONE;
     }
@@ -96,8 +92,9 @@ public class Commands {
 
             Group group = new Group(args.get(0));
             getManager().groups.add(group);
+
             getManager().saveGroups();
-            sendChat(sender, "mypermissions.notification.group.added");
+            ChatManager.send(sender, "mypermissions.notification.group.added");
             return CommandResponse.DONE;
         }
 
@@ -114,7 +111,7 @@ public class Commands {
             Group group = getGroupFromName(args.get(0));
             getManager().groups.remove(group);
             getManager().saveGroups();
-            sendChat(sender, "mypermissions.notification.group.deleted");
+            ChatManager.send(sender, "mypermissions.notification.group.deleted");
             return CommandResponse.DONE;
         }
 
@@ -131,7 +128,7 @@ public class Commands {
             Group group = getGroupFromName(args.get(0));
             group.setName(args.get(1));
             getManager().saveGroups();
-
+            ChatManager.send(sender, "mypermissions.notification.group.renamed");
             return CommandResponse.DONE;
         }
 
@@ -141,7 +138,7 @@ public class Commands {
                 parentName = "mypermissions.cmd.group",
                 syntax = "/perm group list")
         public static CommandResponse groupListCommand(ICommandSender sender, List<String> args) {
-            sendChat(sender, "mypermissions.notification.group.list", getManager().groups.toString());
+            ChatManager.send(sender, getManager().groups.toChatMessage());
             return CommandResponse.DONE;
         }
 
@@ -167,7 +164,7 @@ public class Commands {
             Group group = getGroupFromName(args.get(0));
             group.permsContainer.add(args.get(1));
             getManager().saveGroups();
-            sendChat(sender, "mypermissions.notification.perm.added");
+            ChatManager.send(sender, "mypermissions.notification.perm.added");
 
             return CommandResponse.DONE;
         }
@@ -185,7 +182,7 @@ public class Commands {
             Group group = getGroupFromName(args.get(0));
             group.permsContainer.remove(args.get(1));
             getManager().saveGroups();
-            sendChat(sender, "mypermissions.notification.perm.removed");
+            ChatManager.send(sender, "mypermissions.notification.perm.removed");
 
             return CommandResponse.DONE;
         }
@@ -201,7 +198,7 @@ public class Commands {
             }
 
             Group group = getGroupFromName(args.get(0));
-            sendChat(sender, "mypermissions.notification.group.perm.list", group.getName(), group.permsContainer.toString());
+            ChatManager.send(sender, group.permsContainer.toChatMessage());
             return CommandResponse.DONE;
         }
 
@@ -234,9 +231,9 @@ public class Commands {
             }
 
             UUID uuid = getUUIDFromUsername(args.get(0));
-            Group group = getManager().users.get(uuid).group;
+            User user = getManager().users.get(uuid);
 
-            sendChat(sender, "mypermissions.notification.user.group",  args.get(0), group.getName());
+            ChatManager.send(sender, "mypermissions.notification.user.group",  user, user.group);
 
             return CommandResponse.DONE;
         }
@@ -261,7 +258,7 @@ public class Commands {
                 user.group = group;
             }
             getManager().saveUsers();
-            sendChat(sender, "mypermissions.notification.user.group.set");
+            ChatManager.send(sender, "mypermissions.notification.user.group.set");
 
             return CommandResponse.DONE;
         }
@@ -272,7 +269,7 @@ public class Commands {
                 parentName = "mypermissions.cmd.user",
                 syntax = "/perm user list")
         public static CommandResponse userListCommand(ICommandSender sender, List<String> args) {
-            sendChat(sender, "mypermissions.notification.user.list", getManager().users.toString());
+            ChatManager.send(sender, getManager().users.toChatMessage());
 
             return CommandResponse.DONE;
         }
@@ -300,7 +297,7 @@ public class Commands {
             User user = getManager().users.get(uuid);
             user.permsContainer.add(args.get(1));
             getManager().saveUsers();
-            sendChat(sender, "mypermissions.notification.perm.added");
+            ChatManager.send(sender, "mypermissions.notification.perm.added");
 
             return CommandResponse.DONE;
         }
@@ -319,7 +316,7 @@ public class Commands {
             User user = getManager().users.get(uuid);
             user.permsContainer.remove(args.get(1));
             getManager().saveUsers();
-            sendChat(sender, "mypermissions.notification.perm.removed");
+            ChatManager.send(sender, "mypermissions.notification.perm.removed");
 
             return CommandResponse.DONE;
         }
@@ -338,7 +335,7 @@ public class Commands {
             User user = getManager().users.get(uuid);
 
             getManager().saveUsers();
-            sendChat(sender, "mypermissions.notification.user.perm.list", args.get(0), user.permsContainer.toString());
+            ChatManager.send(sender, user.permsContainer.toChatMessage());
 
             return CommandResponse.DONE;
         }
