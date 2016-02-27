@@ -3,11 +3,9 @@ package mypermissions.permission.core.entities;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
 import myessentials.chat.api.ChatComponentFormatted;
-import myessentials.chat.api.ChatComponentList;
 import myessentials.chat.api.IChatFormat;
 import myessentials.json.api.SerializerTemplate;
 import myessentials.localization.api.LocalManager;
-import myessentials.utils.ColorUtils;
 import mypermissions.permission.core.container.PermissionsContainer;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
@@ -134,22 +132,13 @@ public class Group implements IChatFormat {
 
         @Override
         public IChatComponent toChatMessage() {
-            IChatComponent root = new ChatComponentList();
-            root.appendSibling(LocalManager.get("myessentials.format.list.header", new ChatComponentFormatted("{9|GROUPS}")));
+            IChatComponent root = new ChatComponentText("");
 
             for (Group group : this) {
-                ChatComponentText parents = new ChatComponentText("");
-                for (Group parent : group.parents) {
-                    IChatComponent parentComponent = LocalManager.get("mypermissions.format.group.parent", new ChatComponentText(parent.getName()));
-                    if (parents.getSiblings().size() == 0) {
-                        parents.appendSibling(parentComponent);
-                    } else {
-                        parents.appendSibling(new ChatComponentText(", ").setChatStyle(ColorUtils.styleComma))
-                                .appendSibling(parentComponent);
-                    }
+                if (root.getSiblings().size() > 0) {
+                    root.appendSibling(new ChatComponentFormatted("{7|, }"));
                 }
-
-                root.appendSibling(LocalManager.get("mypermissions.format.group.long", group.name, parents));
+                root.appendSibling(group.toChatMessage());
             }
 
             return root;

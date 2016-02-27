@@ -1,7 +1,10 @@
 package mypermissions.command.core;
 
+import myessentials.chat.api.ChatComponentFormatted;
+import myessentials.chat.api.ChatComponentList;
 import myessentials.chat.api.ChatManager;
 import myessentials.localization.api.LocalManager;
+import myessentials.utils.ColorUtils;
 import myessentials.utils.PlayerUtils;
 import mypermissions.MyPermissions;
 import mypermissions.command.api.CommandResponse;
@@ -12,6 +15,8 @@ import mypermissions.permission.core.bridge.MyPermissionsBridge;
 import mypermissions.permission.core.entities.Group;
 import mypermissions.permission.core.entities.User;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 
 import java.util.List;
 import java.util.UUID;
@@ -138,7 +143,25 @@ public class Commands {
                 parentName = "mypermissions.cmd.group",
                 syntax = "/perm group list")
         public static CommandResponse groupListCommand(ICommandSender sender, List<String> args) {
-            ChatManager.send(sender, getManager().groups.toChatMessage());
+            IChatComponent root = new ChatComponentList();
+            root.appendSibling(LocalManager.get("myessentials.format.list.header", new ChatComponentFormatted("{9|GROUPS}")));
+
+            for (Group group : getManager().groups) {
+                ChatComponentText parents = new ChatComponentText("");
+                for (Group parent : group.parents) {
+                    IChatComponent parentComponent = LocalManager.get("mypermissions.format.group.parent", new ChatComponentText(parent.getName()));
+                    if (parents.getSiblings().size() == 0) {
+                        parents.appendSibling(parentComponent);
+                    } else {
+                        parents.appendSibling(new ChatComponentText(", ").setChatStyle(ColorUtils.styleComma))
+                                .appendSibling(parentComponent);
+                    }
+                }
+
+                root.appendSibling(LocalManager.get("mypermissions.format.group.long", group.getName(), parents));
+            }
+
+            ChatManager.send(sender, root);
             return CommandResponse.DONE;
         }
 
@@ -269,7 +292,12 @@ public class Commands {
                 parentName = "mypermissions.cmd.user",
                 syntax = "/perm user list")
         public static CommandResponse userListCommand(ICommandSender sender, List<String> args) {
-            ChatManager.send(sender, getManager().users.toChatMessage());
+            ChatComponentList root = new ChatComponentList();
+            root.appendSibling(LocalManager.get("myessentials.format.list.header", new ChatComponentFormatted("{9|USERS}")));
+
+            for (User user : getManager().users) {
+                root.appendSibling(LocalManager.get("mypermissions.format.user.long", user.lastPlayerName, user.group));
+            }
 
             return CommandResponse.DONE;
         }
