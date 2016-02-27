@@ -2,19 +2,21 @@ package mypermissions.command.core.entities;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
-import myessentials.localization.api.Local;
-import myessentials.MyEssentialsCore;
+import myessentials.chat.api.ChatManager;
 import myessentials.entities.api.TreeNode;
+import myessentials.localization.api.Local;
 import myessentials.utils.StringUtils;
+import mypermissions.MyPermissions;
 import mypermissions.command.api.CommandCompletion;
 import mypermissions.command.api.CommandManager;
 import mypermissions.command.api.CommandResponse;
 import mypermissions.command.api.annotation.Command;
 import mypermissions.command.core.chat.ChatComponentHelpMenu;
+import mypermissions.command.core.exception.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
-import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -105,12 +107,13 @@ public class CommandTreeNode extends TreeNode<CommandTreeNode> {
                 sendSyntax(sender);
             }
         } catch (InvocationTargetException e) {
-            if (e.getCause() instanceof RuntimeException)
+            if (e.getCause() instanceof CommandException) {
+                ChatManager.send(sender, ((CommandException) e.getCause()).message);
+            } else if (e.getCause() instanceof RuntimeException) {
                 throw (RuntimeException) e.getCause();
-            else
-                MyEssentialsCore.instance.LOG.info(ExceptionUtils.getStackTrace(e));
-        } catch (Exception e2) {
-            MyEssentialsCore.instance.LOG.error(ExceptionUtils.getStackTrace(e2));
+            }
+        } catch (IllegalAccessException e) {
+            MyPermissions.instance.LOG.error(ExceptionUtils.getStackTrace(e));
         }
     }
 

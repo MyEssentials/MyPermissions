@@ -63,8 +63,9 @@ minecraft {
 
 // Setup Deps
 dependencies {
+    compile project(":MyEssentials-TestSuite")
     compile project(":MyEssentials-Core")
-    compile 'info.servertools.core:ServerTools-CORE:1.7.10-2.2.0.72:deobf'
+    //compile 'info.servertools.core:ServerTools-CORE:1.7.10-2.2.0.72:deobf'
 }
 
 // Process Resources, injecting version numbers in
