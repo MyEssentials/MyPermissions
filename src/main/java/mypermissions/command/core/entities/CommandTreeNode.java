@@ -4,7 +4,6 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import myessentials.Localization;
 import myessentials.MyEssentialsCore;
-import myessentials.chat.api.HelpMenu;
 import mypermissions.command.api.CommandCompletion;
 import mypermissions.command.api.CommandManager;
 import mypermissions.command.api.CommandResponse;
