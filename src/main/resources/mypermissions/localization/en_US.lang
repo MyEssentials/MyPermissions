@@ -37,3 +37,14 @@ mypermissions.cmd.user.perm.help=Everything related to a player's perm nodes
 mypermissions.cmd.user.perm.list.help=Lists all perm nodes a player has
 mypermissions.cmd.user.perm.remove.help=Removes a perm node from a player
 mypermissions.cmd.user.perm.add.help=Adds a perm node to a player
+
+# Formatting
+
+mypermissions.format.group=&7%s&f( P: %s &f)
+mypermissions.format.group.parent=&f%s
+
+mypermissions.format.group=[7|%s][f|( P:]%s[f| )]
+mypermissions.format.group=&[7%s]&[f]( P: %s &[f])
+mypermissions.notification.group.renamed=[a]Group has been renamed successfully
+mypermissions.notification.group.renamed=[a]Group has been [5|renamed] successfully
+mypermissions.notification.group.renamed=[a|Group has been][5| renamed][a| successfully]
