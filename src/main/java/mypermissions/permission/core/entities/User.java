@@ -3,6 +3,7 @@ package mypermissions.permission.core.entities;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
 
+import myessentials.chat.api.ChatFormat;
 import myessentials.chat.api.IChatFormat;
 import myessentials.json.api.SerializerTemplate;
 import myessentials.utils.ColorUtils;
@@ -23,7 +24,7 @@ import java.util.UUID;
 /**
  * A wrapper around the EntityPlayer with additional objects for permissions
  */
-public class User implements IChatFormat {
+public class User extends ChatFormat {
 
     public Group group;
 
@@ -55,7 +56,7 @@ public class User implements IChatFormat {
     }
 
     @Override
-    public IChatComponent toChatMessage() {
+    public IChatComponent toChatMessage(boolean shortened) {
         return MyPermissions.instance.LOCAL.getLocalization("mypermissions.format.user", lastPlayerName, group.getName());
     }
 
@@ -177,7 +178,7 @@ public class User implements IChatFormat {
         }
 
         @Override
-        public IChatComponent toChatMessage() {
+        public IChatComponent toChatMessage(boolean shortened) {
             ChatComponentText message = new ChatComponentText("Users: \n");
 
             for (User user : this) {
@@ -186,6 +187,11 @@ public class User implements IChatFormat {
             }
 
             return message;
+        }
+
+        @Override
+        public IChatComponent toChatMessage() {
+            return toChatMessage(false);
         }
     }
 }

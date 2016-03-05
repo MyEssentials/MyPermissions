@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
 
 import myessentials.chat.api.ChatComponentFormatted;
+import myessentials.chat.api.ChatFormat;
 import myessentials.chat.api.IChatFormat;
 import myessentials.json.api.SerializerTemplate;
 import myessentials.utils.ColorUtils;
@@ -21,7 +22,7 @@ import java.util.Iterator;
  * Each player can only have one group assigned to.
  * Groups have a hierarchy.
  */
-public class Group implements IChatFormat {
+public class Group extends ChatFormat {
 
     private String name;
 
@@ -68,7 +69,7 @@ public class Group implements IChatFormat {
     }
 
     @Override
-    public IChatComponent toChatMessage() {
+    public IChatComponent toChatMessage(boolean shortened) {
 
         ChatComponentText parents = new ChatComponentText("");
         for (Group parent : this.parents) {
@@ -145,7 +146,7 @@ public class Group implements IChatFormat {
         }
 
         @Override
-        public IChatComponent toChatMessage() {
+        public IChatComponent toChatMessage(boolean shortened) {
 
             ChatComponentText message = new ChatComponentText("Groups \n");
 
@@ -155,6 +156,11 @@ public class Group implements IChatFormat {
             }
 
             return message;
+        }
+
+        @Override
+        public IChatComponent toChatMessage() {
+            return toChatMessage(false);
         }
     }
 }
