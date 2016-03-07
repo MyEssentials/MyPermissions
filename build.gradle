@@ -65,13 +65,9 @@ minecraft {
 dependencies {
     compile project(":MyEssentials-TestSuite")
     compile project(":MyEssentials-Core")
-<<<<<<< HEAD
-    //compile 'info.servertools.core:ServerTools-CORE:1.7.10-2.2.0.72:deobf'
-=======
     compile 'info.servertools.core:ServerTools-CORE:1.7.10-2.2.0.72:deobf'
 
     testCompile project(":MyEssentials-TestSuite")
->>>>>>> 4f2fdd00981a4d82d5f64547995082a20b2e224c
 }
 
 // Process Resources, injecting version numbers in
