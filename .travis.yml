@@ -21,6 +21,7 @@ deploy:
       repo: MyEssentials/MyEssentials-Core
       all_branches: true
 before_install:
-  - pip install codecov
+  - git submodule update --init --recursive
+  - pip install --user codecov
 after_success:
   - codecov

@@ -1,4 +1,4 @@
-package mypermissions.test.permissions;
+package mypermissions.permissions;
 
 import junit.framework.Assert;
 import metest.api.BaseTest;

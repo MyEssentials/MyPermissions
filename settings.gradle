@@ -1,5 +1,6 @@
 rootProject.name = "MyPermissions"
 <<<<<<< HEAD
+<<<<<<< HEAD
 include ":MyEssentials-TestSuite", ":MyEssentials-Core"
 project(":MyEssentials-TestSuite").projectDir = new File('MyEssentials-Core/MyEssentials-TestSuite')
 =======
@@ -7,3 +8,7 @@ include ":MyEssentials-Core", ":MyEssentials-TestSuite"
 project(":MyEssentials-TestSuite").projectDir = new File('MyEssentials-Core/MyEssentials-TestSuite')
 
 >>>>>>> a3ea939516685f7c4fab9b1fde5c15c99d12dc2c
+=======
+include ":MyEssentials-TestSuite", ":MyEssentials-Core"
+project(":MyEssentials-TestSuite").projectDir = new File('MyEssentials-Core/MyEssentials-TestSuite')
+>>>>>>> 4f2fdd00981a4d82d5f64547995082a20b2e224c

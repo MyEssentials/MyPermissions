@@ -3,6 +3,7 @@ package mypermissions.permission.core.entities;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
 import myessentials.chat.api.ChatComponentFormatted;
+import myessentials.chat.api.ChatFormat;
 import myessentials.chat.api.IChatFormat;
 import myessentials.json.api.SerializerTemplate;
 import myessentials.localization.api.LocalManager;
@@ -22,7 +23,7 @@ import java.util.UUID;
 /**
  * A wrapper around the EntityPlayer with additional objects for permissions
  */
-public class User implements IChatFormat {
+public class User extends ChatFormat {
 
     public Group group;
 

@@ -1,4 +1,4 @@
-package mypermissions.test.command;
+package mypermissions.command;
 
 
 import myessentials.utils.StringUtils;
