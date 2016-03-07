@@ -3,7 +3,6 @@ package mypermissions.permission.core.entities;
 import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
 import myessentials.chat.api.ChatComponentFormatted;
-import myessentials.chat.api.ChatFormat;
 import myessentials.chat.api.IChatFormat;
 import myessentials.json.api.SerializerTemplate;
 import myessentials.localization.api.LocalManager;
@@ -20,7 +19,7 @@ import java.util.Iterator;
  * Each player can only have one group assigned to.
  * Groups have a hierarchy.
  */
-public class Group extends ChatFormat {
+public class Group implements IChatFormat {
 
     private String name;
 

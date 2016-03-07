@@ -1,6 +1,6 @@
 package mypermissions.command;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import metest.api.BaseTest;
 import metest.api.TestPlayer;
 import mypermissions.MyPermissions;
