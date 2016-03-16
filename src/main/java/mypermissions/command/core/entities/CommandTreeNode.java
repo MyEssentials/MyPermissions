@@ -111,6 +111,8 @@ public class CommandTreeNode extends TreeNode<CommandTreeNode> {
                 ChatManager.send(sender, ((CommandException) e.getCause()).message);
             } else if (e.getCause() instanceof RuntimeException) {
                 throw (RuntimeException) e.getCause();
+            } else {
+                MyPermissions.instance.LOG.error(ExceptionUtils.getStackTrace(e));
             }
         } catch (IllegalAccessException e) {
             MyPermissions.instance.LOG.error(ExceptionUtils.getStackTrace(e));

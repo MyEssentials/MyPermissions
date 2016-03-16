@@ -1,5 +1,6 @@
 package mypermissions.command.core.chat;
 
+import myessentials.chat.api.ChatComponentContainer;
 import myessentials.chat.api.ChatComponentFormatted;
 import myessentials.chat.api.ChatComponentMultiPage;
 import myessentials.localization.api.LocalManager;
@@ -27,8 +28,8 @@ public class ChatComponentHelpMenu extends ChatComponentMultiPage {
     }
 
     @Override
-    public List<IChatComponent> getHeader(int page) {
-        List<IChatComponent> header = super.getHeader(page);
+    public ChatComponentContainer getHeader(int page) {
+        ChatComponentContainer header = super.getHeader(page);
         header.add(new ChatComponentFormatted("{9| - Command: }{9o|%s}", command.getLocalizedSyntax()));
         return header;
     }
