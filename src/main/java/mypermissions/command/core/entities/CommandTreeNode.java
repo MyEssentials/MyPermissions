@@ -11,7 +11,7 @@ import mypermissions.command.api.CommandCompletion;
 import mypermissions.command.api.CommandManager;
 import mypermissions.command.api.CommandResponse;
 import mypermissions.command.api.annotation.Command;
-import mypermissions.command.core.chat.ChatComponentHelpMenu;
+import mypermissions.command.core.chat.TextComponentHelpMenu;
 import mypermissions.command.core.exception.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.ChatComponentText;
@@ -34,7 +34,7 @@ public class CommandTreeNode extends TreeNode<CommandTreeNode> {
     private Method method;
     private String localizationKey;
 
-    private ChatComponentHelpMenu helpMenu;
+    private TextComponentHelpMenu helpMenu;
     private Supplier<String> name = Suppliers.memoizeWithExpiration(new Supplier<String>() {
         @Override
         public String get() {
@@ -142,7 +142,7 @@ public class CommandTreeNode extends TreeNode<CommandTreeNode> {
 
     public void sendHelpMessage(ICommandSender sender, int page) {
         if(helpMenu == null) {
-            helpMenu = new ChatComponentHelpMenu(9, this);
+            helpMenu = new TextComponentHelpMenu(9, this);
         }
         helpMenu.sendPage(sender, page);
     }

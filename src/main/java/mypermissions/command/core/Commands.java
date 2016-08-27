@@ -1,7 +1,7 @@
 package mypermissions.command.core;
 
-import myessentials.chat.api.ChatComponentFormatted;
-import myessentials.chat.api.ChatComponentList;
+import myessentials.chat.api.TextComponentFormatted;
+import myessentials.chat.api.TextComponentList;
 import myessentials.chat.api.ChatManager;
 import myessentials.localization.api.LocalManager;
 import myessentials.utils.ColorUtils;
@@ -143,8 +143,8 @@ public class Commands {
                 parentName = "mypermissions.cmd.group",
                 syntax = "/perm group list")
         public static CommandResponse groupListCommand(ICommandSender sender, List<String> args) {
-            IChatComponent root = new ChatComponentList();
-            root.appendSibling(LocalManager.get("myessentials.format.list.header", new ChatComponentFormatted("{9|GROUPS}")));
+            IChatComponent root = new TextComponentList();
+            root.appendSibling(LocalManager.get("myessentials.format.list.header", new TextComponentFormatted("{9|GROUPS}")));
 
             for (Group group : getManager().groups) {
                 ChatComponentText parents = new ChatComponentText("");
@@ -292,8 +292,8 @@ public class Commands {
                 parentName = "mypermissions.cmd.user",
                 syntax = "/perm user list")
         public static CommandResponse userListCommand(ICommandSender sender, List<String> args) {
-            ChatComponentList root = new ChatComponentList();
-            root.appendSibling(LocalManager.get("myessentials.format.list.header", new ChatComponentFormatted("{9|USERS}")));
+            TextComponentList root = new TextComponentList();
+            root.appendSibling(LocalManager.get("myessentials.format.list.header", new TextComponentFormatted("{9|USERS}")));
 
             for (User user : getManager().users) {
                 root.appendSibling(LocalManager.get("mypermissions.format.user.long", user.lastPlayerName, user.group));

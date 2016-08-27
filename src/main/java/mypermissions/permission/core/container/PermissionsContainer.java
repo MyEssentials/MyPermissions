@@ -1,8 +1,8 @@
 package mypermissions.permission.core.container;
 
 
-import myessentials.chat.api.ChatComponentFormatted;
-import myessentials.chat.api.ChatComponentList;
+import myessentials.chat.api.TextComponentFormatted;
+import myessentials.chat.api.TextComponentList;
 import myessentials.chat.api.IChatFormat;
 import myessentials.localization.api.LocalManager;
 import mypermissions.permission.core.entities.PermissionLevel;
@@ -52,8 +52,8 @@ public class PermissionsContainer extends ArrayList<String> implements IChatForm
 
     @Override
     public IChatComponent toChatMessage() {
-        IChatComponent root = new ChatComponentList();
-        root.appendSibling(LocalManager.get("myessentials.format.list.header", new ChatComponentFormatted("{9|PERMISSIONS}")));
+        IChatComponent root = new TextComponentList();
+        root.appendSibling(LocalManager.get("myessentials.format.list.header", new TextComponentFormatted("{9|PERMISSIONS}")));
         for(String perm : this) {
             root.appendSibling(LocalManager.get("mypermissions.format.permission", perm));
         }

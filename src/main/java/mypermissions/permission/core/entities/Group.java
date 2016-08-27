@@ -2,7 +2,7 @@ package mypermissions.permission.core.entities;
 
 import com.google.common.collect.ImmutableList;
 import com.google.gson.*;
-import myessentials.chat.api.ChatComponentFormatted;
+import myessentials.chat.api.TextComponentFormatted;
 import myessentials.chat.api.IChatFormat;
 import myessentials.json.api.SerializerTemplate;
 import myessentials.localization.api.LocalManager;
@@ -136,7 +136,7 @@ public class Group implements IChatFormat {
 
             for (Group group : this) {
                 if (root.getSiblings().size() > 0) {
-                    root.appendSibling(new ChatComponentFormatted("{7|, }"));
+                    root.appendSibling(new TextComponentFormatted("{7|, }"));
                 }
                 root.appendSibling(group.toChatMessage());
             }
