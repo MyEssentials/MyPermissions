@@ -4,7 +4,7 @@ package mypermissions.command;
 import myessentials.utils.StringUtils;
 import mypermissions.command.api.CommandResponse;
 import mypermissions.command.api.annotation.Command;
-import net.minecraft.command.CommandException;
+import mypermissions.command.core.exception.CommandException;
 import net.minecraft.command.ICommandSender;
 
 import java.util.List;

@@ -6,10 +6,10 @@ import mypermissions.permission.core.bridge.IPermissionBridge;
 import mypermissions.permission.api.proxy.PermissionProxy;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.server.CommandBlockLogic;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.rcon.RConConsoleSource;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.CommandBlockBaseLogic;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,7 +29,7 @@ public class CommandTree extends Tree<CommandTreeNode> {
         this.customManager = customManager;
     }
 
-    public void commandCall(ICommandSender sender, List<String> args) {
+    public void commandCall(ICommandSender sender, List<String> args) throws CommandException {
         CommandTreeNode node = getRoot();
         while (!args.isEmpty() && node.getChild(args.get(0)) != null) {
             node = node.getChild(args.get(0));
@@ -77,7 +77,7 @@ public class CommandTree extends Tree<CommandTreeNode> {
     }
 
     public boolean hasPermission(ICommandSender sender, CommandTreeNode node) throws CommandException {
-        if(!node.getAnnotation().console() && (sender instanceof MinecraftServer || sender instanceof RConConsoleSource || sender instanceof CommandBlockLogic)) {
+        if(!node.getAnnotation().console() && (sender instanceof MinecraftServer || sender instanceof RConConsoleSource || sender instanceof CommandBlockBaseLogic)) {
             throw new CommandException("commands.generic.permission");
         }
 

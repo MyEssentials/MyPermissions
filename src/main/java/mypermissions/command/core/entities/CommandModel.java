@@ -1,13 +1,17 @@
 package mypermissions.command.core.entities;
 
-import cpw.mods.fml.common.Optional;
 import mypermissions.permission.api.proxy.PermissionProxy;
 import mypermissions.permission.core.bridge.ForgeEssentialsPermissionBridge;
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.Optional;
 import net.minecraftforge.permission.PermissionLevel;
 import net.minecraftforge.permission.PermissionObject;
 
+import javax.annotation.Nullable;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,8 +29,16 @@ public class CommandModel extends CommandBase implements PermissionObject {
     }
 
     @Override
-    public List getCommandAliases() {
+    public List<String> getCommandAliases() {
         return Arrays.asList(commandTree.getRoot().getAnnotation().alias());
+    }
+
+    /**
+     * Processes the command by calling the method that was linked to it.
+     */
+    @Override
+    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+        commandTree.commandCall(sender, Arrays.asList(args));
     }
 
     @Override
@@ -38,16 +50,8 @@ public class CommandModel extends CommandBase implements PermissionObject {
         return commandTree.getRoot().getLocalizedSyntax();
     }
 
-    /**
-     * Processes the command by calling the method that was linked to it.
-     */
     @Override
-    public void processCommand(ICommandSender sender, String[] args) {
-        commandTree.commandCall(sender, Arrays.asList(args));
-    }
-
-    @Override
-    public List addTabCompletionOptions(ICommandSender sender, String[] args) {
+    public List<String> getTabCompletionOptions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos pos) {
         CommandTreeNode node = commandTree.getNodeFromArgs(Arrays.asList(args));
 
         int argumentNumber = commandTree.getArgumentNumber(Arrays.asList(args));
@@ -59,10 +63,10 @@ public class CommandModel extends CommandBase implements PermissionObject {
 
     /**
      * This method does not have enough arguments to check for subcommands down the command trees therefore it always returns true.
-     * The check is moved directly to the processCommand method.
+     * The check is moved directly to the execute method.
      */
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender sender) {
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
         return true;
     }
 

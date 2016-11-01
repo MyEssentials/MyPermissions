@@ -5,7 +5,6 @@ import myessentials.chat.api.TextComponentFormatted;
 import myessentials.chat.api.TextComponentMultiPage;
 import myessentials.localization.api.LocalManager;
 import mypermissions.command.core.entities.CommandTreeNode;
-import net.minecraft.util.IChatComponent;
 
 public class TextComponentHelpMenu extends TextComponentMultiPage {
 

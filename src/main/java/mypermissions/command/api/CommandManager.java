@@ -1,6 +1,5 @@
 package mypermissions.command.api;
 
-import cpw.mods.fml.common.Loader;
 import myessentials.MyEssentialsCore;
 import myessentials.localization.api.Local;
 import myessentials.utils.ClassUtils;
@@ -15,6 +14,7 @@ import mypermissions.command.core.registrar.ICommandRegistrar;
 import mypermissions.command.core.registrar.VanillaCommandRegistrar;
 import mypermissions.permission.core.bridge.IPermissionBridge;
 import net.minecraft.command.ICommandSender;
+import net.minecraftforge.fml.common.Loader;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -129,6 +129,7 @@ public class CommandManager {
                 if (parent != null) {
                     parent.addChild(new CommandTreeNode(parent, entry.getKey(), entry.getValue()));
                     if(!root.getLocal().hasLocalization(entry.getKey().permission() + ".help")) {
+
                         MyEssentialsCore.instance.LOG.error("Missing help: " + entry.getKey().permission() + ".help");
                     }
                     it.remove();

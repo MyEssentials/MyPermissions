@@ -7,8 +7,8 @@ import myessentials.chat.api.IChatFormat;
 import myessentials.json.api.SerializerTemplate;
 import myessentials.localization.api.LocalManager;
 import mypermissions.permission.core.container.PermissionsContainer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -66,7 +66,7 @@ public class Group implements IChatFormat {
     }
 
     @Override
-    public IChatComponent toChatMessage() {
+    public ITextComponent toChatMessage() {
         return LocalManager.get("mypermissions.format.group.short", name);
     }
 
@@ -131,8 +131,8 @@ public class Group implements IChatFormat {
         }
 
         @Override
-        public IChatComponent toChatMessage() {
-            IChatComponent root = new ChatComponentText("");
+        public ITextComponent toChatMessage() {
+            ITextComponent root = new TextComponentString("");
 
             for (Group group : this) {
                 if (root.getSiblings().size() > 0) {

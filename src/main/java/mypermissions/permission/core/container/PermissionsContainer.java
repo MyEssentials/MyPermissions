@@ -6,7 +6,7 @@ import myessentials.chat.api.TextComponentList;
 import myessentials.chat.api.IChatFormat;
 import myessentials.localization.api.LocalManager;
 import mypermissions.permission.core.entities.PermissionLevel;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -51,8 +51,8 @@ public class PermissionsContainer extends ArrayList<String> implements IChatForm
     }
 
     @Override
-    public IChatComponent toChatMessage() {
-        IChatComponent root = new TextComponentList();
+    public ITextComponent toChatMessage() {
+        ITextComponent root = new TextComponentList();
         root.appendSibling(LocalManager.get("myessentials.format.list.header", new TextComponentFormatted("{9|PERMISSIONS}")));
         for(String perm : this) {
             root.appendSibling(LocalManager.get("mypermissions.format.permission", perm));

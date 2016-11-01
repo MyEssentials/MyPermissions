@@ -1,8 +1,5 @@
 package mypermissions;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.*;
 import myessentials.localization.api.Local;
 import myessentials.localization.api.LocalManager;
 import mypermissions.command.api.CommandManager;
@@ -12,6 +9,9 @@ import mypermissions.core.handlers.Ticker;
 import mypermissions.permission.core.bridge.MyPermissionsBridge;
 import mypermissions.permission.api.proxy.PermissionProxy;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.*;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = Constants.MODID, name = Constants.MODNAME, version = Constants.VERSION, dependencies = Constants.DEPENDENCIES, acceptableRemoteVersions = "*")

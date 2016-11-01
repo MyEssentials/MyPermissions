@@ -14,8 +14,8 @@ import mypermissions.command.api.annotation.Command;
 import mypermissions.command.core.chat.TextComponentHelpMenu;
 import mypermissions.command.core.exception.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import org.apache.commons.lang.exception.ExceptionUtils;
 
 import java.lang.reflect.InvocationTargetException;
@@ -148,7 +148,7 @@ public class CommandTreeNode extends TreeNode<CommandTreeNode> {
     }
 
     public void sendSyntax(ICommandSender sender) {
-        sender.addChatMessage(new ChatComponentText(EnumChatFormatting.DARK_AQUA + getLocalizedSyntax()));
+        sender.addChatMessage(new TextComponentString(TextFormatting.DARK_AQUA + getLocalizedSyntax()));
     }
 
     public String getLocalizationKey() {

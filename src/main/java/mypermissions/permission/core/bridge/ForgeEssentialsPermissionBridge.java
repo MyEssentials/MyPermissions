@@ -10,7 +10,7 @@ public class ForgeEssentialsPermissionBridge implements IPermissionBridge {
 
     @Override
     public boolean hasPermission(UUID uuid, String permission) {
-        EntityPlayer player = PlayerUtils.getPlayerFromUUID(uuid);
+        EntityPlayer player = PlayerUtils.getPlayer(uuid);
         return PermissionManager.checkPermission(player, permission);
     }
 }

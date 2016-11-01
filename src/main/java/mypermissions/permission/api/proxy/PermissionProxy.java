@@ -1,6 +1,5 @@
 package mypermissions.permission.api.proxy;
 
-import cpw.mods.fml.common.Loader;
 import myessentials.utils.ClassUtils;
 import mypermissions.MyPermissions;
 import mypermissions.permission.core.bridge.IPermissionBridge;
@@ -10,6 +9,7 @@ import mypermissions.permission.core.bridge.BukkitPermissionBridge;
 import mypermissions.permission.core.bridge.ForgeEssentialsPermissionBridge;
 import mypermissions.permission.core.bridge.MyPermissionsBridge;
 import mypermissions.permission.core.bridge.ServerToolsPermissionBridge;
+import net.minecraftforge.fml.common.Loader;
 
 public class PermissionProxy {
     public static final String PERM_SYSTEM_BUKKIT = "$Bukkit";

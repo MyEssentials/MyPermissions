@@ -11,8 +11,8 @@ import mypermissions.core.config.Config;
 import mypermissions.permission.api.proxy.PermissionProxy;
 import mypermissions.permission.core.bridge.MyPermissionsBridge;
 import mypermissions.permission.core.container.PermissionsContainer;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.UsernameCache;
 
 import java.lang.reflect.Type;
@@ -54,7 +54,7 @@ public class User implements IChatFormat {
     }
 
     @Override
-    public IChatComponent toChatMessage() {
+    public ITextComponent toChatMessage() {
         return LocalManager.get("mypermissions.format.user.short", lastPlayerName);
     }
 
@@ -176,8 +176,8 @@ public class User implements IChatFormat {
         }
 
         @Override
-        public IChatComponent toChatMessage() {
-            IChatComponent root = new ChatComponentText("");
+        public ITextComponent toChatMessage() {
+            ITextComponent root = new TextComponentString("");
 
             for (User user : this) {
                 if (root.getSiblings().size() > 0) {
