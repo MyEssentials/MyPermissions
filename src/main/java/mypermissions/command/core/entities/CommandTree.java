@@ -85,7 +85,7 @@ public class CommandTree extends Tree<CommandTreeNode> {
             UUID uuid = ((EntityPlayer) sender).getUniqueID();
             String permission = node.getAnnotation().permission();
 
-            if (PermissionProxy.getPermissionManager().hasPermission(uuid, permission) ||
+            if (PermissionProxy.getPermissionManager().hasPermission(uuid, permission) &&
                (customManager != null && customManager.hasPermission(uuid, permission))) {
                 return true;
             }
