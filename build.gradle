@@ -1,6 +1,7 @@
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
@@ -11,7 +12,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
     }
 }
 
@@ -48,8 +49,7 @@ if (System.env.TRAVIS_TAG != null && !System.env.TRAVIS_TAG.isEmpty()) {
 }
 
 // Apply Plugins
-apply plugin: "curseforge"
-apply plugin: "forge"
+apply plugin: 'net.minecraftforge.gradle'
 
 // Configure Everything
 version = "${config.minecraft_version}-${config.build_number}${config.build_type}"
@@ -57,12 +57,65 @@ group = config.group
 archivesBaseName = config.archivesBaseName
 
 minecraft {
-    version = "${config.minecraft_version}-${config.forge_version}-${config.minecraft_version}"
-    replace "@VERSION@", "${project.version}"
+//    version = "${config.minecraft_version}-${config.forge_version}-${config.minecraft_version}"
+//    replace "@VERSION@", "${project.version}"
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                examplemod {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                examplemod {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+
+            // Recommended logging level for the console
+            property 'forge.logging.console.level', 'debug'
+
+            args '--mod', 'examplemod', '--all', '--output', file('src/generated/resources/')
+
+            mods {
+                examplemod {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
 }
 
 // Setup Deps
 dependencies {
+    minecraft "net.minecraftforge:forge:${config.minecraft_version}-${config.forge_version}"
     compile project(":MyEssentials-Core")
     //compile 'info.servertools.core:ServerTools-CORE:1.7.10-2.2.0.72:deobf'
 
@@ -71,11 +124,11 @@ dependencies {
 
 // Process Resources, injecting version numbers in
 processResources {
-    inputs.property "mod_version", project.version
+    inputs.property "mod_version", config.minecraft_version
 
     from(sourceSets.main.resources.srcDirs) {
         include '*.info'
-        expand 'mod_version': project.version, 'minecraft_version': project.minecraft.version
+        expand 'mod_version': project.version, 'minecraft_version': config.minecraft_version
     }
     from(sourceSets.main.resources.srcDirs) {
         exclude '*.info'
@@ -83,9 +136,9 @@ processResources {
 }
 
 // Setup Curse Upload task
-curse {
-    apiKey = System.env.CURSEFORGEKEY
-    projectId = config.project_id
-    changelog = "" // TODO Add changelog support
-    releaseType = config.build_type.equals('a') ? "alpha" : (config.build_type.equals('b') ? "beta" : "release")
-}
+//curse {
+//    apiKey = System.env.CURSEFORGEKEY
+//    projectId = config.project_id
+//    changelog = "" // TODO Add changelog support
+//    releaseType = config.build_type.equals('a') ? "alpha" : (config.build_type.equals('b') ? "beta" : "release")
+//}
