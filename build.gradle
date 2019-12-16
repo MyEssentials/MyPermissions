@@ -50,11 +50,13 @@ if (System.env.TRAVIS_TAG != null && !System.env.TRAVIS_TAG.isEmpty()) {
 
 // Apply Plugins
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'idea'
 
 // Configure Everything
 version = "${config.minecraft_version}-${config.build_number}${config.build_type}"
 group = config.group
 archivesBaseName = config.archivesBaseName
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 minecraft {
 //    version = "${config.minecraft_version}-${config.forge_version}-${config.minecraft_version}"
